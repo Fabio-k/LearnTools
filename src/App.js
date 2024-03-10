@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./Header";
+import Content from "./Content";
+import "./index.css";
+import { useState } from "react";
 
 function App() {
+  const [chat, setChat] = useState([
+    { id: 1, actor: "assistant", message: "hello there" },
+    { id: 2, actor: "user", message: "hello there" },
+  ]);
+
+  const handleMessage = (message) => {
+    let newId = chat[chat.length - 1].id + 1;
+    let messageObj = { id: newId, actor: "user", message: message };
+    setChat([...chat, messageObj]);
+  };
+  const handleSunmit = () => {
+    let userMessage = document.getElementById("userMessage").value;
+    if (userMessage != "") {
+      console.log(userMessage);
+      handleMessage(userMessage);
+      userMessage = "";
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Content chat={chat} handleSubmit={handleSunmit} />
     </div>
   );
 }
