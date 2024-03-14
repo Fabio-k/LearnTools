@@ -1,7 +1,7 @@
 const Header = () => {
   return (
     <header>
-      <h1>Feyman's Assistant</h1>
+      <h1>LearnTool's</h1>
     </header>
   );
 };
