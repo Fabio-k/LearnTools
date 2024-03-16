@@ -1,6 +1,6 @@
-import Header from "./Header";
-import Content from "./Content";
-import Home from "./Home";
+import Header from "../components/Header";
+import Content from "../views/Content";
+import Home from "../views/Home";
 import "./index.css";
 import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
