@@ -1,0 +1,36 @@
+{
+  "health": "ok",
+  "resumes": [
+    {
+      "id": 1,
+      "title": "threads",
+      "description": "Threads são como diferentes tarefas que um programa pode realizar ao mesmo tempo. Imagine que você está cozinhando: enquanto a panela está no fogo, você também está cortando os ingredientes. Essas duas ações podem acontecer ao mesmo tempo, assim como as threads permitem que um programa faça várias coisas simultaneamente. Cada thread é como uma linha de atividade separada dentro do programa, permitindo que ele seja mais eficiente e responsivo. No entanto, é importante coordenar essas atividades para evitar que elas atrapalhem umas às outras. Isso é feito usando técnicas especiais para garantir que as threads não interfiram umas nas outras enquanto compartilham recursos, como dados ou arquivos.",
+      "topic": [1, 2]
+    },
+    {
+      "id": 2,
+      "title": "processos",
+      "description": "Processos são programas em execução no computador. Cada processo tem seu próprio espaço de memória, que inclui o código do programa, dados e recursos temporários. Eles funcionam de forma independente, o que significa que podem executar diferentes tarefas simultaneamente sem interferir um no outro. Por exemplo, você pode estar escrevendo um documento enquanto ouve música em um player de mídia, e ambos os aplicativos são processos separados. O sistema operacional é responsável por gerenciar esses processos, atribuindo recursos, como CPU e memória, e garantindo que cada um execute de forma eficiente e segura. Os processos podem se comunicar entre si, geralmente através de mecanismos fornecidos pelo sistema operacional, como sinais, pipes ou sockets, permitindo a cooperação entre diferentes partes de um sistema computacional.",
+      "topic": [1, 2]
+    },
+    {
+      "id": 3,
+      "title": "Scrum",
+      "description": "scrum é um método flexivel de desemvolvimento de aplicações ou seja um conjunto de etapas utilizadas no desenvolvimento de uma aplicação.O principal objetivo do scrum é entregar funcionalidades cada vez que a metodologia é aplicada ou seja algo que o cliente já possa avaliar.Para este método funcionar existem três cargos no scrum o project owner que é a pessoa que conhece bem da área para a qual o projeto está sendo desemvolvido,a equipe de desemvolvimento que são responsáveis por transformar requisitos em software e o scrum master que akuda a equipe desemvolvimento a focar em desemvolver a funcionalidade",
+      "topic": [3]
+    }
+  ],
+  "flashcards": [
+    {
+      "id": 1,
+      "pergunta": "o que é software",
+      "resposta": "software é composto por instruções de computador, estrutura de dados e documentação como um manual do software"
+    }
+  ],
+  "topicos": [
+    { "id": 1, "name": "computer science" },
+    { "id": 2, "name": "OS" },
+    { "id": 3, "name": "engenharia de software" }
+  ],
+  "users": ""
+}

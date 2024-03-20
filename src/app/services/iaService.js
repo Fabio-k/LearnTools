@@ -3,7 +3,7 @@ import api from "../api";
 class iaService extends api {
   constructor() {
     super();
-    this.baseURL = "http://localhost:8080/v1/chat/completions";
+    this.baseUrl = "http://localhost:8080/v1/chat/completions";
   }
 
   formatMessages = (messages) => {
@@ -17,7 +17,7 @@ class iaService extends api {
 
   async chat(body) {
     console.log(body);
-    const data = await this.post(this.baseURL, {
+    const data = await this.post({
       model: "openhermes",
       messages: body,
     });

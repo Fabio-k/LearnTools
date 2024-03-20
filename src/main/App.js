@@ -5,6 +5,7 @@ import Resumes from "../views/Resumes";
 import "../index.css";
 import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import Rotas from "./Rotas";
 function App() {
   const [timeLimit, setTimeLimit] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
@@ -53,20 +54,7 @@ function App() {
         handleStartPauseButtom={handleStartPauseButtom}
         isRunning={isRunning}
       />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              time={`${minutes.toString().padStart(2, "0")}:${seconds
-                .toString()
-                .padStart(2, "0")}`}
-            />
-          }
-        />
-        <Route path="/ia" element={<AiChat />} />
-        <Route path="/resumes" element={<Resumes />} />
-      </Routes>
+      <Rotas />
     </div>
   );
 }
