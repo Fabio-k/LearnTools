@@ -60,29 +60,31 @@ const Header = ({
                 </p>
               </div>
               <Fade in={fadeIn} style={{ position: "absolute", top: "100%" }}>
-                <div
-                  style={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    border: "1px solid black",
-                    borderRadius: "10px",
-                    padding: "5px",
-                    justifyContent: "space-evenly",
-                  }}
-                >
-                  <button
-                    style={{ background: "none", border: "none" }}
-                    onClick={handleStartPauseButtom}
+                {fadeIn && (
+                  <div
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      border: "1px solid black",
+                      borderRadius: "10px",
+                      padding: "5px",
+                      justifyContent: "space-evenly",
+                    }}
                   >
-                    {isRunning ? <FaPause /> : <FaPlay />}
-                  </button>
-                  <select name="" id="">
-                    <option value="5">5m</option>
-                    <option value="15">15m</option>
-                    <option value="25">25m</option>
-                  </select>
-                </div>
+                    <button
+                      style={{ background: "none", border: "none" }}
+                      onClick={handleStartPauseButtom}
+                    >
+                      {isRunning ? <FaPause /> : <FaPlay />}
+                    </button>
+                    <select name="" id="">
+                      <option value="5">5m</option>
+                      <option value="15">15m</option>
+                      <option value="25">25m</option>
+                    </select>
+                  </div>
+                )}
               </Fade>
             </div>
           </div>

@@ -30,5 +30,29 @@ class api {
     }
     return response.json();
   }
+
+  async delete() {
+    let response;
+    try {
+      response = await fetch(this.baseUrl, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    return response;
+  }
+  async patch(body) {
+    let response;
+    try {
+      response = await fetch(this.baseUrl, {
+        method: "PATCH",
+        body: JSON.stringify(body),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    return response;
+  }
 }
 export default api;

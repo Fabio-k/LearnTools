@@ -9,4 +9,8 @@ export default class topicService extends api {
   async getResumes() {
     return await this.get();
   }
+
+  async addTopic(body) {
+    return await this.post(body);
+  }
 }
