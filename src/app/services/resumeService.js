@@ -1,6 +1,6 @@
-import api from "../api";
+import Api from "../api";
 
-export default class resumesService extends api {
+export default class resumesService extends Api {
   constructor() {
     super();
     this.baseUrl = "http://localhost:3500/resumes";

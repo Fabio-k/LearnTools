@@ -1,6 +1,8 @@
-# learnTools
+# LearnTools
 
-learnTools é um site que comtêm varias ferramentas úteis para te ajudar no aprendizado e se utiliza da IA em alguma de suas ferramentas
+LearnTools é um site que contêm varias ferramentas úteis para ajudar no aprendizado e se utiliza da IA em alguma de suas funcionalidades como:
+
+- Feynman's Assistant: uma ferramenta que simula a técnica de ensino de Richard Feynman. O usuário explica um tópico para a IA como se estivesse explicando para alguém leigo no assunto. A IA então faz perguntas para preencher lacunas na explicação, destacando pontos que precisam ser melhorados.
 
 # Getting Started with Create React App
 

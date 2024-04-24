@@ -1,6 +1,6 @@
-import api from "../api";
+import Api from "../api";
 
-export default class topicService extends api {
+export default class topicService extends Api {
   constructor() {
     super();
     this.baseUrl = "http://localhost:3500/topicos";

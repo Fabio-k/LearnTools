@@ -7,6 +7,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Input,
+  List,
   Modal,
 } from "reactstrap";
 import resumesService from "../app/services/resumeService";
@@ -127,11 +128,12 @@ const Resumes = () => {
       </section>
 
       {resumes.length > 0 ? (
-        <ul
+        <List
+          type="unstyled"
           style={{
             display: "flex",
-            flexDirection: "column",
             justifyContent: "center",
+            flexDirection: "column",
             alignItems: "center",
           }}
         >
@@ -144,7 +146,7 @@ const Resumes = () => {
               toggleModal={toggleModal}
             />
           ))}
-        </ul>
+        </List>
       ) : (
         <p style={{ textAlign: "center" }}>
           Resumes not found try to reload the page

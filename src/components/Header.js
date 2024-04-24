@@ -1,15 +1,8 @@
 import { useState } from "react";
 import { GiTomato } from "react-icons/gi";
 import { FaPlay, FaPause } from "react-icons/fa";
-import { Nav, NavLink, Fade, Button } from "reactstrap";
-import { Link } from "react-router-dom";
-const Header = ({
-  time,
-  isRunning,
-  handleLongPause,
-  handleShortPause,
-  handleStartPauseButtom,
-}) => {
+import { Nav, Fade, Button } from "reactstrap";
+const Header = ({ time, isRunning, handleStartPauseButtom }) => {
   const [fadeIn, setFadeIn] = useState(false);
 
   const toggle = () => setFadeIn(!fadeIn);
@@ -26,7 +19,7 @@ const Header = ({
               fontSize: "50px",
             }}
           >
-            StudyTool's
+            LearnTools
           </h1>
           <div style={{ display: "flex" }}>
             <div

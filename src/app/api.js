@@ -1,4 +1,14 @@
-class api {
+export const server = "http://localhost:8080";
+
+export const aiModel = {
+  openHermes: "openhermes",
+};
+export const routes = {
+  assistent: `${server}/assistents/{id}/ask`,
+  resumes: `${server}/resumes`,
+};
+
+class Api {
   constructor() {
     this.headers = {
       "Content-Type": "application/json",
@@ -7,12 +17,13 @@ class api {
   }
   async post(objeto) {
     let response;
+    const request = {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(objeto),
+    };
     try {
-      response = await fetch(this.baseUrl, {
-        method: "POST",
-        headers: this.headers,
-        body: JSON.stringify(objeto),
-      });
+      response = await fetch(this.baseUrl, request);
     } catch (err) {
       console.log(err);
     }
@@ -55,4 +66,4 @@ class api {
     return response;
   }
 }
-export default api;
+export default Api;
