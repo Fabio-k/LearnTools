@@ -1,14 +1,26 @@
 package com.LearnTools.LearnToolsApi.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.LearnTools.LearnToolsApi.model.Assistent;
+import com.LearnTools.LearnToolsApi.repository.AssistentRepository;
+import java.util.List; // Add this import statement
 
 @RestController
 public class AssistentController {
+    @Autowired
+    AssistentRepository repository;
 
-    @GetMapping
-    public String listAssistents() {
-        return "Hello";
+    @GetMapping("/assistents")
+    public List<Assistent> listAssistents() {
+        return repository.findAll();
     }
 
+    @GetMapping("/assistents/{name}")
+    public Assistent getAssistentByName(@PathVariable String name) {
+        return repository.findByName(name);
+    }
 }
