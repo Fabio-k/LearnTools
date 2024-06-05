@@ -3,9 +3,12 @@ name: Java CI
 on:
   push:
     branches: [backend]
+    paths:
+      - "backend/**"
   pull_request:
     branches: [backend]
-
+    paths:
+      - "backend/**"
 jobs:
   build:
     runs-on: ubuntu-latest
