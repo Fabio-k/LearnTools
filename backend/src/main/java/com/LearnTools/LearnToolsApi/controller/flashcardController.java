@@ -1,22 +1,20 @@
 package com.LearnTools.LearnToolsApi.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.LearnTools.LearnToolsApi.model.FlashCardTag;
-import com.LearnTools.LearnToolsApi.model.Flashcard;
-import com.LearnTools.LearnToolsApi.model.Tag;
-import com.LearnTools.LearnToolsApi.repository.FlashCardTagRepository;
-import com.LearnTools.LearnToolsApi.repository.FlashcardRepository;
-import com.LearnTools.LearnToolsApi.repository.TagRepository;
+import com.LearnTools.LearnToolsApi.controller.dto.FlashcardDTO;
+import com.LearnTools.LearnToolsApi.model.entidades.FlashCardTag;
+import com.LearnTools.LearnToolsApi.model.entidades.Flashcard;
+import com.LearnTools.LearnToolsApi.model.entidades.Tag;
+import com.LearnTools.LearnToolsApi.model.repository.FlashCardTagRepository;
+import com.LearnTools.LearnToolsApi.model.repository.FlashcardRepository;
+import com.LearnTools.LearnToolsApi.model.repository.TagRepository;
 
 @RestController
-public class flashcardController {
+public class FlashcardController {
     @Autowired
     private FlashcardRepository repository;
 
@@ -38,23 +36,4 @@ public class flashcardController {
             flashCardTagRepository.save(flashCardTag);
         }
     }
-}
-
-class FlashcardDTO {
-    private String question;
-    private String answer;
-    private List<Integer> tagsId = new ArrayList<>();
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public List<Integer> getTagsId() {
-        return tagsId;
-    }
-
 }

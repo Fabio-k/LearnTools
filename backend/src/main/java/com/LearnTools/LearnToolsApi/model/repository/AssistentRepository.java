@@ -1,9 +1,9 @@
-package com.LearnTools.LearnToolsApi.repository;
-
-import com.LearnTools.LearnToolsApi.model.Assistent; // Import the Assistent class
+package com.LearnTools.LearnToolsApi.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.LearnTools.LearnToolsApi.model.entidades.Assistent;
 
 @Repository
 public interface AssistentRepository extends JpaRepository<Assistent, Integer> {

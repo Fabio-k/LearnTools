@@ -1,4 +1,4 @@
-package com.LearnTools.LearnToolsApi.model;
+package com.LearnTools.LearnToolsApi.model.entidades;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

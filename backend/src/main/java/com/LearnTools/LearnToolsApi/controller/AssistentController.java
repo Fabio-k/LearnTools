@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.LearnTools.LearnToolsApi.model.Assistent;
-import com.LearnTools.LearnToolsApi.repository.AssistentRepository;
-import java.util.List; // Add this import statement
+import com.LearnTools.LearnToolsApi.model.entidades.Assistent;
+import com.LearnTools.LearnToolsApi.model.repository.AssistentRepository;
+
+import java.util.List; 
 
 @RestController
 public class AssistentController {

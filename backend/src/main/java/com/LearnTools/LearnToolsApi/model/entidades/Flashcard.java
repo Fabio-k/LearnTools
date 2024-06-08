@@ -1,4 +1,4 @@
-package com.LearnTools.LearnToolsApi.model;
+package com.LearnTools.LearnToolsApi.model.entidades;
 
 import java.util.ArrayList;
 import java.util.List;
