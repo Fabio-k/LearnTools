@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.controller.dto.TagDTO;
+import com.LearnTools.LearnToolsApi.handler.CampoObrigatorioException;
 import com.LearnTools.LearnToolsApi.model.entidades.Tag;
 import com.LearnTools.LearnToolsApi.model.repository.TagRepository;
 
@@ -26,6 +27,10 @@ public class TagController {
 
     @PostMapping("/tags")
     public void postMethodName(@RequestBody TagDTO tagDTO) {
+        if (tagDTO.getName() == null)
+            throw new CampoObrigatorioException("nome");
+        if (tagDTO.getColor() == null)
+            throw new CampoObrigatorioException("cor");
         Tag tag = new Tag(tagDTO.getName(), tagDTO.getColor());
         repository.save(tag);
     }

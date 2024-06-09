@@ -5,10 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.LearnTools.LearnToolsApi.handler.BussinessException;
 import com.LearnTools.LearnToolsApi.model.entidades.Assistent;
 import com.LearnTools.LearnToolsApi.model.repository.AssistentRepository;
 
-import java.util.List; 
+import java.util.List;
 
 @RestController
 public class AssistentController {
@@ -22,6 +23,10 @@ public class AssistentController {
 
     @GetMapping("/assistents/{name}")
     public Assistent getAssistentByName(@PathVariable String name) {
-        return repository.findByName(name);
+        Assistent assistent = repository.findByName(name);
+        if (assistent == null) {
+            throw new BussinessException("Assistente não encontrado");
+        }
+        return assistent;
     }
 }

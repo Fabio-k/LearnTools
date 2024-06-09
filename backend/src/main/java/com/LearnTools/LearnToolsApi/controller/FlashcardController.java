@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.controller.dto.FlashcardDTO;
+import com.LearnTools.LearnToolsApi.handler.BussinessException;
+import com.LearnTools.LearnToolsApi.handler.CampoObrigatorioException;
 import com.LearnTools.LearnToolsApi.model.entidades.FlashCardTag;
 import com.LearnTools.LearnToolsApi.model.entidades.Flashcard;
 import com.LearnTools.LearnToolsApi.model.entidades.Tag;
@@ -29,7 +31,7 @@ public class FlashcardController {
         Flashcard flashcard = new Flashcard(flashcardDTO.getQuestion(), flashcardDTO.getAnswer());
         repository.save(flashcard);
         for (Integer tagID : flashcardDTO.getTagsId()) {
-            Tag tag = tagRepository.findById(tagID).orElseThrow(() -> new RuntimeException("tag not found"));
+            Tag tag = tagRepository.findById(tagID).orElseThrow(() -> new BussinessException("tag não encontrada"));
             FlashCardTag flashCardTag = new FlashCardTag();
             flashCardTag.setFlashcard(flashcard);
             flashCardTag.setTag(tag);
