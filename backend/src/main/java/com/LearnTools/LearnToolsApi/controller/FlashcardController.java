@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.controller.dto.FlashcardDTO;
 import com.LearnTools.LearnToolsApi.handler.BussinessException;
-import com.LearnTools.LearnToolsApi.handler.CampoObrigatorioException;
 import com.LearnTools.LearnToolsApi.model.entidades.FlashCardTag;
 import com.LearnTools.LearnToolsApi.model.entidades.Flashcard;
 import com.LearnTools.LearnToolsApi.model.entidades.Tag;
