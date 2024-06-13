@@ -13,8 +13,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 public class UserController {
@@ -35,6 +38,12 @@ public class UserController {
         user.setRoles(new ArrayList<>());
         user.getRoles().add("USER");
         repository.save(user);
+    }
+
+    @Transactional
+    @DeleteMapping("/login/{username}")
+    public void deleteUser(@PathVariable String username) {
+        repository.deleteByUsername(username);
     }
 
 }

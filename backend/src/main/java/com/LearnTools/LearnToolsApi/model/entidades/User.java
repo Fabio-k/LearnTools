@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,6 +34,15 @@ public class User {
 
     @Column(length = 30, name = "usr_img")
     private String image;
+
+    @OneToMany(mappedBy = "user")
+    private List<Flashcard> flashcards;
+
+    @OneToMany(mappedBy = "user")
+    private List<Resume> resumes;
+
+    @OneToMany(mappedBy = "user")
+    private List<Tag> tags;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "tab_user_roles", joinColumns = @JoinColumn(name = "usr_id"))

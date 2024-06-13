@@ -11,4 +11,6 @@ import com.LearnTools.LearnToolsApi.model.entidades.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT e FROM User e JOIN FETCH e.roles WHERE e.username = (:username)")
     public User findByUsername(@Param("username") String username);
+
+    public void deleteByUsername(String username);
 }
