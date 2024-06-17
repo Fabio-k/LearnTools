@@ -2,8 +2,7 @@ package com.LearnTools.LearnToolsApi.model.entidades;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,8 +25,11 @@ public class Tag {
     @Column(name = "tag_color", length = 9)
     private String color;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE)
     private List<FlashCardTag> flashCardTags;
+
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE)
+    private List<ResumeTag> resumeTags;
 
     @ManyToOne
     @JoinColumn(name = "usr_id")

@@ -3,6 +3,7 @@ package com.LearnTools.LearnToolsApi.model.entidades;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ public class Flashcard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany(mappedBy = "flashcard")
+    @OneToMany(mappedBy = "flashcard", cascade = CascadeType.REMOVE)
     private List<FlashCardTag> flashCardTags = new ArrayList<>();
 
     @Column(length = 100, name = "fls_que")

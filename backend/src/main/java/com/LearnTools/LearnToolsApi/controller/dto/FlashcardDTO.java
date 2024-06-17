@@ -6,7 +6,7 @@ import java.util.List;
 public class FlashcardDTO {
     private String question;
     private String answer;
-    private List<Integer> tagsId = new ArrayList<>();
+    private List<String> tagsName = new ArrayList<>();
 
     public String getQuestion() {
         return question;
@@ -16,7 +16,7 @@ public class FlashcardDTO {
         return answer;
     }
 
-    public List<Integer> getTagsId() {
-        return tagsId;
+    public List<String> getTagsName() {
+        return tagsName;
     }
 }
