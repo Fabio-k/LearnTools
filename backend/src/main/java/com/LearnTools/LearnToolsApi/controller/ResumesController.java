@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.controller.dto.ResumesDTO;
 import com.LearnTools.LearnToolsApi.controller.dto.ResumesResponseDTO;
-import com.LearnTools.LearnToolsApi.handler.BussinessException;
+import com.LearnTools.LearnToolsApi.handler.BusinessException;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,16 +70,18 @@ public class ResumesController {
     public void postResume(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ResumesDTO resumesDTO) {
         Resume resume = new Resume(resumesDTO.getTitle(), resumesDTO.getResume());
         resume.setUser(userRepository.findByUsername(userDetails.getUsername()));
-        createResumeTags(resumesDTO, userDetails, resume);
         resumeRepository.save(resume);
+        createResumeTags(resumesDTO, userDetails, resume);
     }
 
     private void createResumeTags(ResumesDTO resumesDTO, UserDetails userDetails, Resume resume) {
         List<Tag> userTags = tagRepository.findAllByUserUsername(userDetails.getUsername());
+        if (userTags == null)
+            throw new BusinessException("necessário incuir pelo menos uma tag");
         for (String name : resumesDTO.getTagName()) {
             Optional<Tag> matchTag = userTags.stream().filter(t -> t.getName().equals(name)).findFirst();
             if (matchTag.isEmpty())
-                throw new BussinessException("Tag não encontrada");
+                throw new BusinessException("Tag não encontrada");
 
             ResumeTag resumeTag = new ResumeTag(resume, matchTag.get());
             resumeTagRepository.save(resumeTag);

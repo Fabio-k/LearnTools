@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.controller.dto.FlashcardDTO;
 import com.LearnTools.LearnToolsApi.controller.dto.FlashcardResponseDTO;
-import com.LearnTools.LearnToolsApi.handler.BussinessException;
+import com.LearnTools.LearnToolsApi.handler.BusinessException;
 import com.LearnTools.LearnToolsApi.model.entidades.FlashCardTag;
 import com.LearnTools.LearnToolsApi.model.entidades.Flashcard;
 import com.LearnTools.LearnToolsApi.model.entidades.Tag;
@@ -22,10 +25,6 @@ import com.LearnTools.LearnToolsApi.model.repository.FlashCardTagRepository;
 import com.LearnTools.LearnToolsApi.model.repository.FlashcardRepository;
 import com.LearnTools.LearnToolsApi.model.repository.TagRepository;
 import com.LearnTools.LearnToolsApi.model.repository.UserRepository;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/flashcards")
@@ -67,7 +66,7 @@ public class FlashcardController {
         for (String tagName : flashcardDTO.getTagsName()) {
             Optional<Tag> tag = userTags.stream().filter(t -> t.getName().equals(tagName)).findFirst();
             if (tag.isEmpty())
-                throw new BussinessException("tag não encontrada");
+                throw new BusinessException("tag não encontrada");
 
             FlashCardTag flashCardTag = new FlashCardTag();
             flashCardTag.setFlashcard(flashcard);
@@ -85,7 +84,7 @@ public class FlashcardController {
                 .filter(t -> t.getId() == Integer.parseInt(flashcardid))
                 .findFirst();
         if (selectedFlashcard.isEmpty())
-            throw new BussinessException("Flashcard não encontrado");
+            throw new BusinessException("Flashcard não encontrado");
         repository.deleteById(Integer.parseInt(flashcardid));
     }
 }

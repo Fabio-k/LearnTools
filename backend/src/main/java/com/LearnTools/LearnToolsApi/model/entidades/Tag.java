@@ -32,7 +32,7 @@ public class Tag {
     private List<ResumeTag> resumeTags;
 
     @ManyToOne
-    @JoinColumn(name = "usr_id")
+    @JoinColumn(name = "tag_usr_id")
     private User user;
 
     public Tag() {

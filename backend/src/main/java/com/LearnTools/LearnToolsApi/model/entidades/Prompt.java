@@ -8,28 +8,28 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "assistent")
-public class Assistent {
+@Table(name = "prompt")
+public class Prompt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ass_id")
+    @Column(name = "prt_id")
     private Integer id;
-    @Column(length = 50, nullable = false)
+    @Column(name = "prt_name", length = 50, nullable = false)
     private String name;
-    @Column(length = 100, nullable = false)
-    private String description;
+    @Column(name = "prt_prompt", length = 100, nullable = false)
+    private String prompt;
 
-    public Assistent() {
+    public Prompt() {
     }
 
-    public Assistent(String name, String description) {
+    public Prompt(String name, String prompt) {
         this.name = name;
-        this.description = description;
+        this.prompt = prompt;
     }
 
     @Override
     public String toString() {
-        return "Assistent [id=" + id + ", name=" + name + ", Description=" + description + "]";
+        return "Assistent [id=" + id + ", name=" + name + ", prompt=" + prompt + "]";
     }
 
     public String getName() {
@@ -40,12 +40,12 @@ public class Assistent {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPrompt() {
+        return prompt;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPrompt(String description) {
+        this.prompt = description;
     }
 
 }

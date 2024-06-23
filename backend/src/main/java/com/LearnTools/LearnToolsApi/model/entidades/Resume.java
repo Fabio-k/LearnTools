@@ -24,11 +24,11 @@ public class Resume {
     @Column(length = 50, name = "res_title", nullable = false)
     private String title;
 
-    @Column(length = 300, name = "res_des", nullable = false)
+    @Column(length = 300, name = "res_text", nullable = false)
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "usr_id")
+    @JoinColumn(name = "res_usr_id")
     private User user;
 
     @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)

@@ -3,14 +3,16 @@ package com.LearnTools.LearnToolsApi.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.controller.dto.UserDTO;
+import com.LearnTools.LearnToolsApi.handler.BusinessException;
+import com.LearnTools.LearnToolsApi.model.entidades.Role;
 import com.LearnTools.LearnToolsApi.model.entidades.User;
+import com.LearnTools.LearnToolsApi.model.entidades.UserRoles;
+import com.LearnTools.LearnToolsApi.model.repository.RolesRepository;
 import com.LearnTools.LearnToolsApi.model.repository.UserRepository;
+import com.LearnTools.LearnToolsApi.model.repository.UserRolesRepository;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,19 +22,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 public class UserController {
-    @Autowired
     private UserRepository repository;
-
-    @Autowired
+    private UserRolesRepository userRolesRepository;
+    private RolesRepository rolesRepository;
     private PasswordEncoder passwordEncoder;
+
+    public UserController(UserRepository repository, UserRolesRepository userRolesRepository,
+            RolesRepository rolesRepository, PasswordEncoder passwordEncoder) {
+        this.repository = repository;
+        this.userRolesRepository = userRolesRepository;
+        this.rolesRepository = rolesRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping("/signup")
     @Transactional
     public void postUser(@RequestBody UserDTO userDTO) {
         User user = new User(userDTO.getName(), userDTO.getUsername(), passwordEncoder.encode(userDTO.getPassword()));
-        user.setRoles(new ArrayList<>());
-        user.getRoles().add("USER");
         repository.save(user);
+        Role role = rolesRepository.findByName("USER");
+        if (role == null)
+            throw new BusinessException("role not found");
+        UserRoles userRoles = new UserRoles();
+        userRoles.setRole(role);
+        userRoles.setUser(user);
+        userRolesRepository.save(userRoles);
     }
 
     @DeleteMapping("/user")

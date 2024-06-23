@@ -1,18 +1,13 @@
 package com.LearnTools.LearnToolsApi.model.entidades;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -48,10 +43,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Chat> chats;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "tab_user_roles", joinColumns = @JoinColumn(name = "usr_id"))
-    @Column(name = "role_id")
-    private List<String> roles = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<UserRoles> userRoles;
 
     public User() {
 
@@ -99,12 +92,19 @@ public class User {
         this.image = image;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public List<Chat> getChats() {
+        return chats;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
     }
 
+    public List<UserRoles> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<UserRoles> userRoles) {
+        this.userRoles = userRoles;
+    }
 }

@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.controller.dto.TagDTO;
-import com.LearnTools.LearnToolsApi.handler.BussinessException;
+import com.LearnTools.LearnToolsApi.handler.BusinessException;
 import com.LearnTools.LearnToolsApi.handler.CampoObrigatorioException;
 import com.LearnTools.LearnToolsApi.model.entidades.Tag;
 import com.LearnTools.LearnToolsApi.model.repository.TagRepository;
@@ -44,7 +44,7 @@ public class TagController {
         List<Tag> tags = repository.findAllByUserUsername(userDetails.getUsername());
         Optional<Tag> selectedTag = tags.stream().filter(t -> t.getName() == tagName).findFirst();
         if (selectedTag.isEmpty())
-            throw new BussinessException("tag not found");
+            throw new BusinessException("tag not found");
         repository.delete(selectedTag.get());
     }
 

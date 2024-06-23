@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.LearnTools.LearnToolsApi.handler.BussinessException;
-import com.LearnTools.LearnToolsApi.model.entidades.Assistent;
-import com.LearnTools.LearnToolsApi.model.repository.AssistentRepository;
+import com.LearnTools.LearnToolsApi.handler.BusinessException;
+import com.LearnTools.LearnToolsApi.model.entidades.Prompt;
+import com.LearnTools.LearnToolsApi.model.repository.PromptRepository;
 
 import java.util.List;
 
@@ -16,19 +16,19 @@ import java.util.List;
 @RequestMapping("/assistents")
 public class AssistentController {
     @Autowired
-    AssistentRepository repository;
+    PromptRepository repository;
 
     @GetMapping()
-    public List<Assistent> listAssistents() {
+    public List<Prompt> listAssistents() {
         return repository.findAll();
     }
 
     @GetMapping("/{name}")
-    public Assistent getAssistentByName(@PathVariable String name) {
-        Assistent assistent = repository.findByName(name);
-        if (assistent == null) {
-            throw new BussinessException("Assistente não encontrado");
+    public Prompt getAssistentByName(@PathVariable String name) {
+        Prompt prompts = repository.findByName(name);
+        if (prompts == null) {
+            throw new BusinessException("Assistente não encontrado");
         }
-        return assistent;
+        return prompts;
     }
 }

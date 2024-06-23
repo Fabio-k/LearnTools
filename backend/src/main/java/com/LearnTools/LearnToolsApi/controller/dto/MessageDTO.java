@@ -1,0 +1,24 @@
+package com.LearnTools.LearnToolsApi.controller.dto;
+
+public class MessageDTO {
+    private Integer resumeID;
+    private String message;
+    private Integer assistentID;
+    private String model;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Integer getResumeID() {
+        return resumeID;
+    }
+
+    public Integer getAssistentID() {
+        return assistentID;
+    }
+
+    public String getModel() {
+        return model;
+    }
+}

@@ -30,7 +30,7 @@ public class Flashcard {
     private String answer;
 
     @ManyToOne
-    @JoinColumn(name = "usr_id")
+    @JoinColumn(name = "fls_usr_id")
     private User user;
 
     public Flashcard() {

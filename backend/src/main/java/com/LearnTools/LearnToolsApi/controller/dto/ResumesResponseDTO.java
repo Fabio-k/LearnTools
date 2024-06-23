@@ -10,6 +10,7 @@ public class ResumesResponseDTO {
 
     private String title;
     private String resume;
+    private Integer id;
     private List<TagDTO> tags = new ArrayList<>();
 
     public String getTitle() {
@@ -36,12 +37,22 @@ public class ResumesResponseDTO {
         this.tags = tags;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
     public static ResumesResponseDTO fromEntity(Resume resume) {
         ResumesResponseDTO resumesDTO = new ResumesResponseDTO();
         resumesDTO.setTitle(resume.getTitle());
         resumesDTO.setResume(resume.getDescription());
+        resumesDTO.setId(resume.getId());
         resumesDTO
                 .setTagsResponse(resume.getResumeTags().stream().map(TagDTO::fromEntity).collect(Collectors.toList()));
         return resumesDTO;
     }
+
 }

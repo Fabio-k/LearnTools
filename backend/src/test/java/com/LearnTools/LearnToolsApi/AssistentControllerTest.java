@@ -2,8 +2,9 @@ package com.LearnTools.LearnToolsApi;
 
 import com.LearnTools.LearnToolsApi.controller.AssistentController;
 import com.LearnTools.LearnToolsApi.handler.GlobalExecptionHandler;
-import com.LearnTools.LearnToolsApi.model.entidades.Assistent;
-import com.LearnTools.LearnToolsApi.model.repository.AssistentRepository;
+import com.LearnTools.LearnToolsApi.model.entidades.Prompt;
+import com.LearnTools.LearnToolsApi.model.repository.PromptRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class AssistentControllerTest {
 
     @MockBean
-    private AssistentRepository repository;
+    private PromptRepository repository;
 
     @InjectMocks
     private AssistentController controller;
@@ -47,22 +48,22 @@ public class AssistentControllerTest {
 
     @Test
     public void testListAssistents() throws Exception {
-        Assistent assistent1 = new Assistent("Assistent 1", "teste");
-        Assistent assistent2 = new Assistent("Assistent 2", "teste");
-        List<Assistent> assistents = Arrays.asList(assistent1, assistent2);
+        Prompt prompt1 = new Prompt("prompt 1", "teste");
+        Prompt prompt2 = new Prompt("prompt 2", "teste");
+        List<Prompt> prompts = Arrays.asList(prompt1, prompt2);
 
-        when(repository.findAll()).thenReturn(assistents);
+        when(repository.findAll()).thenReturn(prompts);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/assistents")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Assistent 1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Assistent 2"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("prompt 1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("prompt 2"));
     }
 
     @Test
     public void testGetAssistentByName() throws Exception {
-        Assistent assistent = new Assistent("Assistent 1", "teste");
+        Prompt assistent = new Prompt("Assistent 1", "teste");
 
         when(repository.findByName("Assistent 1")).thenReturn(assistent);
 
