@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tab_user")
@@ -23,9 +24,11 @@ public class User {
     private String name;
 
     @Column(length = 50, name = "usr_username", nullable = false)
+    @NotNull
     private String username;
 
     @Column(length = 100, name = "usr_password", nullable = false)
+    @NotNull
     private String password;
 
     @Column(length = 30, name = "usr_img")

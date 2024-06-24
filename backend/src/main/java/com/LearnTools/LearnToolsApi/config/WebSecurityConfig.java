@@ -16,7 +16,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class WebSecurityConfig {
     public static final String[] ENDPOINTS_WHITELIST = {
             "/assistents/**",
-            "/signup/**",
+            "/signup",
             "/swagger-ui/**",
             "/v2/api-docs",
             "/webjars/**"

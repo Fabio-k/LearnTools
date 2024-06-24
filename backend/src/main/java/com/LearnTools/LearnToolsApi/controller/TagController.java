@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,7 +50,8 @@ public class TagController {
     }
 
     @PostMapping()
-    public void postMethodName(@RequestBody TagDTO tagDTO, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Integer> postMethodName(@RequestBody TagDTO tagDTO,
+            @AuthenticationPrincipal UserDetails userDetails) {
         if (tagDTO.getName() == null)
             throw new CampoObrigatorioException("nome");
         if (tagDTO.getColor() == null)
@@ -58,6 +60,8 @@ public class TagController {
         Tag tag = new Tag(tagDTO.getName(), tagDTO.getColor());
         tag.setUser(userRepository.findByUsername(userDetails.getUsername()));
         repository.save(tag);
+
+        return ResponseEntity.ok(tag.getId());
     }
 
 }

@@ -8,6 +8,15 @@ public class ResumesDTO {
     private String resume;
     private List<String> tagName = new ArrayList<>();
 
+    public ResumesDTO() {
+    }
+
+    public ResumesDTO(String title, String resume, List<String> tagName) {
+        this.title = title;
+        this.resume = resume;
+        this.tagName = tagName;
+    }
+
     public String getTitle() {
         return title;
     }

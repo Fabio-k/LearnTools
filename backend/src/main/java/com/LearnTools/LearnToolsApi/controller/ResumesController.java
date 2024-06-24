@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,11 +68,14 @@ public class ResumesController {
 
     @PostMapping()
     @Transactional
-    public void postResume(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ResumesDTO resumesDTO) {
+    public ResponseEntity<Integer> postResume(@AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody ResumesDTO resumesDTO) {
         Resume resume = new Resume(resumesDTO.getTitle(), resumesDTO.getResume());
         resume.setUser(userRepository.findByUsername(userDetails.getUsername()));
-        resumeRepository.save(resume);
+        Resume resumeSaved = resumeRepository.save(resume);
         createResumeTags(resumesDTO, userDetails, resume);
+
+        return ResponseEntity.ok(resumeSaved.getId());
     }
 
     private void createResumeTags(ResumesDTO resumesDTO, UserDetails userDetails, Resume resume) {

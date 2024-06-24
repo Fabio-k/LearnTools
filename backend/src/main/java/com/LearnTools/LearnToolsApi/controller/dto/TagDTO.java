@@ -8,6 +8,14 @@ public class TagDTO {
     private String name;
     private String color;
 
+    public TagDTO() {
+    }
+
+    public TagDTO(String name, String color) {
+        this.name = name;
+        this.color = color;
+    }
+
     public String getName() {
         return name;
     }

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.controller.dto.UserDTO;
 import com.LearnTools.LearnToolsApi.handler.BusinessException;
+import com.LearnTools.LearnToolsApi.handler.CampoObrigatorioException;
 import com.LearnTools.LearnToolsApi.model.entidades.Role;
 import com.LearnTools.LearnToolsApi.model.entidades.User;
 import com.LearnTools.LearnToolsApi.model.entidades.UserRoles;
@@ -38,6 +39,10 @@ public class UserController {
     @PostMapping("/signup")
     @Transactional
     public void postUser(@RequestBody UserDTO userDTO) {
+        if (userDTO.getUsername() == null)
+            throw new CampoObrigatorioException("username");
+        if (userDTO.getPassword() == null)
+            throw new CampoObrigatorioException("password");
         User user = new User(userDTO.getName(), userDTO.getUsername(), passwordEncoder.encode(userDTO.getPassword()));
         repository.save(user);
         Role role = rolesRepository.findByName("USER");

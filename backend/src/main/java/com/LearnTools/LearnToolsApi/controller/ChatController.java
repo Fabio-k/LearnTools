@@ -98,7 +98,7 @@ public class ChatController {
             throw new BusinessException("resume not found");
 
         Prompt matchBase = promptRepository.findByName(RESUME_PROMPT);
-        String matchBaseContent = promptRepository.findByName(RESUME_PROMPT).getPrompt();
+        String matchBaseContent = matchBase.getPrompt();
         Optional<Prompt> matchPrompt = promptRepository.findById(messageDTO.getAssistentID());
         Prompt assistentPrompt = matchPrompt.get();
 
