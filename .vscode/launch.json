@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-LearnToolsApiApplication<LearnToolsApi>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.LearnTools.LearnToolsApi.LearnToolsApiApplication",
+      "projectName": "LearnToolsApi",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

@@ -1,76 +1,11 @@
 # LearnTools
 
-LearnTools é um site que contêm varias ferramentas úteis para ajudar no aprendizado e se utiliza da IA em alguma de suas funcionalidades como:
+LearnTools é um site que contêm varias ferramentas úteis para ajudar no aprendizado e utiliza LLM em alguma de suas funcionalidades:
 
-- Feynman's Assistant: uma ferramenta que simula a técnica de ensino de Richard Feynman. O usuário explica um tópico para a IA como se estivesse explicando para alguém leigo no assunto. A IA então faz perguntas para preencher lacunas na explicação, destacando pontos que precisam ser melhorados.
+- Feynman chat: uma ferramenta que simula a técnica de ensino de Richard Feynman. O usuário explica um tópico para a IA como se estivesse explicando para alguém leigo no assunto. A IA então faz perguntas para preencher lacunas na explicação, destacando pontos que precisam ser melhorados.
 
-# Getting Started with Create React App
+- Pomodoro timer: um timer para te ajudar a revezar entre lazer e estudo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Flashcards: revise assuntos respondendo perguntas que voce mesmo criou porêm diferente do flashcard físico as perguntas podem ser remodeladas pela pelo LLM para evitar a memorização da pergunta
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Resumos: Crie resumos que podem posteriormente ser utilizados pela ferramenta `Feyman chat`
