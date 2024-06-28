@@ -1,7 +1,7 @@
 export const server = "http://localhost:8080";
 
 export const aiModel = {
-  openHermes: "openhermes",
+  openHermes: "llama3",
 };
 export const routes = {
   assistent: `${server}/assistents/{id}/ask`,

@@ -1,5 +1,3 @@
-import { ModalHeader, ModalBody, ModalFooter, Input, Button } from "reactstrap";
-
 const TopicFormContent = ({
   topics,
   setTopics,
@@ -21,18 +19,7 @@ const TopicFormContent = ({
     toggleModal();
   };
 
-  return (
-    <>
-      <ModalHeader>Adicionar Tópico</ModalHeader>
-      <ModalBody>
-        <Input placeholder="nome do tópico" id="topicName" required />
-      </ModalBody>
-
-      <ModalFooter>
-        <Button onClick={handleSubmitNewTopic}>adicionar</Button>
-      </ModalFooter>
-    </>
-  );
+  return <></>;
 };
 
 export default TopicFormContent;

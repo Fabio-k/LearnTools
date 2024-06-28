@@ -1,15 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {
-  Button,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Input,
-  List,
-  Modal,
-} from "reactstrap";
 import resumesService from "../app/services/resumeService";
 import topicService from "../app/services/topicService";
 import ResumeCard from "../components/ResumeCard";
@@ -77,84 +67,8 @@ const Resumes = () => {
             padding: "10px",
             alignItems: "center",
           }}
-        >
-          <Input
-            placeholder="search for resume"
-            onChange={(e) => {
-              handleSearchWord(e.target.value);
-            }}
-          />
-          <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
-            <DropdownToggle caret>topico</DropdownToggle>
-            <DropdownMenu>
-              {topics.map((topicObject) => {
-                return (
-                  <DropdownItem key={topicObject.id}>
-                    {topicObject.name}
-                  </DropdownItem>
-                );
-              })}
-              <DropdownItem
-                onClick={() => {
-                  handleModalContent(
-                    <TopicFormContent
-                      topics={topics}
-                      setTopics={setTopics}
-                      topicApiService={topicApiService}
-                      toggleModal={toggleModal}
-                    />
-                  );
-                }}
-              >
-                + add item
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          <Button
-            onClick={() => {
-              handleModalContent(
-                <ResmumesFormContent
-                  topics={topics}
-                  resumes={resumes}
-                  setResumes={setResumes}
-                  toggleModal={toggleModal}
-                />
-              );
-            }}
-          >
-            +
-          </Button>
-        </div>
+        ></div>
       </section>
-
-      {resumes.length > 0 ? (
-        <List
-          type="unstyled"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {resumes.map((resumesObject) => (
-            <ResumeCard
-              resumes={resumes}
-              setResumes={setResumes}
-              resumesObject={resumesObject}
-              handleModalContent={handleModalContent}
-              toggleModal={toggleModal}
-            />
-          ))}
-        </List>
-      ) : (
-        <p style={{ textAlign: "center" }}>
-          Resumes not found try to reload the page
-        </p>
-      )}
-      <Modal isOpen={modalOpen} toggle={toggleModal}>
-        {ModalContent}
-      </Modal>
     </div>
   );
 };

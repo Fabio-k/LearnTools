@@ -1,12 +1,3 @@
-import { FormGroup } from "reactstrap";
-import {
-  Button,
-  Col,
-  Input,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "reactstrap";
 import resumesService from "../app/services/resumeService";
 
 const ResmumesFormContent = ({ topics, resumes, setResumes, toggleModal }) => {
@@ -26,35 +17,7 @@ const ResmumesFormContent = ({ topics, resumes, setResumes, toggleModal }) => {
     toggleModal();
   };
 
-  return (
-    <>
-      <ModalHeader>Adicionar resumo</ModalHeader>
-      <ModalBody>
-        <FormGroup row>
-          <Col sm={8}>
-            <Input placeholder="título do resumo" id="resumeTitle" required />
-          </Col>
-          <Col sm={4}>
-            <Input
-              type="select"
-              onChange={(e) => {
-                console.log(e.target.id);
-              }}
-            >
-              {topics.map((topic) => {
-                return <option key={topic.id}>{topic.name}</option>;
-              })}
-            </Input>
-          </Col>
-        </FormGroup>
-        <Input type="textarea" id="resumeDescription"></Input>
-      </ModalBody>
-
-      <ModalFooter>
-        <Button onClick={handleSubmitNewResume}>adicionar</Button>
-      </ModalFooter>
-    </>
-  );
+  return <></>;
 };
 
 export default ResmumesFormContent;

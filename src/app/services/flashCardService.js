@@ -1,6 +1,6 @@
 import Api from "../api";
 
-export default class FlashCardService extends Api {
+export default class flashCardService extends Api {
   constructor() {
     super();
     this.baseUrl = "http://localhost:3500/flashcards";

@@ -1,0 +1,40 @@
+.link {
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.headerStyle {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 10vh;
+  background-color: #007bff;
+  padding: 0 30px;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.logo {
+  height: 50px;
+  max-width: 100%;
+}
+
+.links {
+  display: flex;
+  width: 20%;
+  justify-content: space-around;
+  min-width: 200px;
+}
+
+.mainContainer {
+  display: flex;
+}
+
+.contentContainer {
+  width: 85%;
+  padding: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
