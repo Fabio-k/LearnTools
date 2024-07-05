@@ -16,6 +16,7 @@ import com.LearnTools.LearnToolsApi.model.entidades.Tag;
 import com.LearnTools.LearnToolsApi.model.repository.TagRepository;
 import com.LearnTools.LearnToolsApi.model.repository.UserRepository;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class TagController {
         this.userRepository = userRepository;
     }
 
+    @CrossOrigin
     @GetMapping()
     public List<TagDTO> getTags(@AuthenticationPrincipal UserDetails userDetails) {
         List<Tag> tags = repository.findAllByUserUsername(userDetails.getUsername());

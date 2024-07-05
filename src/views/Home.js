@@ -1,15 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { useLayout } from "../components/LayoutContext";
 import homeStyle from "../home.module.css";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+import { useLocation } from "react-router-dom";
+import flashCardService from "../app/services/flashCardService";
+import tagService from "../app/services/tagService";
 Chart.register(ArcElement, Tooltip, Legend);
 
 const sideMenu = () => {
   return <aside className={homeStyle.sideMenu}>side menu</aside>;
 };
 
-const FlashcardAnalytics = () => {
+const handleFlashcardAnalyze = (response) => {
+  console.log(response[0]);
+};
+
+const FlashcardAnalytics = (flashcardResponse, tagResponse) => {
   const data = {
     labels: ["Red", "Blue", "Yellow"],
     datasets: [
@@ -39,7 +46,18 @@ const FlashcardAnalytics = () => {
     <>
       <p>analizes</p>
       <div className={homeStyle.flashcardChart}>
-        <Doughnut data={data} style={{ maxHeight: "80%" }} options={options} />
+        {flashcardResponse != undefined ? (
+          <Doughnut
+            data={data}
+            style={{ maxHeight: "80%" }}
+            options={options}
+          />
+        ) : (
+          <h2>
+            Nem um resumo a vista!
+            <br /> Crie um flashcard para obter estatísticas
+          </h2>
+        )}
       </div>
     </>
   );
@@ -64,16 +82,45 @@ const ResumeAnalitics = () => {
 export default function Home() {
   const { setExtraElement } = useLayout();
 
+  const [flashcardData, setFlashcardData] = useState({});
+  const [TagData, setTagData] = useState({});
+  const tagSer = new tagService();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const flashcardService = new flashCardService();
+        const flashcardResponse = await flashcardService.getFlashCards();
+        setFlashcardData(flashcardResponse);
+        const tamanho = Object.keys(flashcardResponse).length;
+        console.log(tamanho);
+
+        const tagResponse = await tagSer.getTag();
+        setTagData(tagResponse);
+      } catch (e) {
+        console.error("Erro ao buscar dados:", e);
+      }
+    };
+    fetchData();
+  }, []);
+
   useEffect(() => {
     setExtraElement(sideMenu);
 
     return () => setExtraElement(null);
   }, [setExtraElement]);
 
+  useEffect(() => {
+    handleFlashcardAnalyze(flashcardData);
+  }, [flashcardData]);
+
   return (
     <>
       <div className={homeStyle.flashcardAnalyze}>
-        <FlashcardAnalytics />
+        <FlashcardAnalytics
+          flashcardResponse={flashcardData}
+          tagResponse={TagData}
+        />
       </div>
 
       <div className={homeStyle.sideAnaliticsContainer}>

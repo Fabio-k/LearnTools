@@ -3,37 +3,50 @@ package com.LearnTools.LearnToolsApi.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.controller.dto.UserDTO;
+import com.LearnTools.LearnToolsApi.controller.dto.UserInformation;
 import com.LearnTools.LearnToolsApi.handler.BusinessException;
 import com.LearnTools.LearnToolsApi.handler.CampoObrigatorioException;
 import com.LearnTools.LearnToolsApi.model.entidades.Role;
 import com.LearnTools.LearnToolsApi.model.entidades.User;
 import com.LearnTools.LearnToolsApi.model.entidades.UserRoles;
+import com.LearnTools.LearnToolsApi.model.entidades.Flashcard;
+import com.LearnTools.LearnToolsApi.model.entidades.Resume;
+import com.LearnTools.LearnToolsApi.model.repository.FlashcardRepository;
+import com.LearnTools.LearnToolsApi.model.repository.ResumeRepository;
 import com.LearnTools.LearnToolsApi.model.repository.RolesRepository;
 import com.LearnTools.LearnToolsApi.model.repository.UserRepository;
 import com.LearnTools.LearnToolsApi.model.repository.UserRolesRepository;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 public class UserController {
-    private UserRepository repository;
-    private UserRolesRepository userRolesRepository;
-    private RolesRepository rolesRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository repository;
+    private final UserRolesRepository userRolesRepository;
+    private final RolesRepository rolesRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final FlashcardRepository flashcardRepository;
+    private final ResumeRepository resumeRepository;
 
     public UserController(UserRepository repository, UserRolesRepository userRolesRepository,
-            RolesRepository rolesRepository, PasswordEncoder passwordEncoder) {
+            RolesRepository rolesRepository, PasswordEncoder passwordEncoder, FlashcardRepository flashcardRepository,
+            ResumeRepository resumeRepository) {
         this.repository = repository;
         this.userRolesRepository = userRolesRepository;
         this.rolesRepository = rolesRepository;
         this.passwordEncoder = passwordEncoder;
+        this.flashcardRepository = flashcardRepository;
+        this.resumeRepository = resumeRepository;
     }
 
     @PostMapping("/signup")
@@ -59,4 +72,22 @@ public class UserController {
     public void deleteUser(@AuthenticationPrincipal UserDetails userDetails) {
         repository.deleteByUsername(userDetails.getUsername());
     }
+
+    @CrossOrigin
+    @PostMapping("/login")
+    public UserInformation postMethodName(@AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        List<Flashcard> flashcards = flashcardRepository.findAllByUserUsername(username);
+        List<Resume> resumes = resumeRepository.findAllByUserUsername(username);
+
+        UserInformation userInformation = new UserInformation();
+        userInformation.setUsername(username);
+        userInformation.setFlashcards(flashcards);
+        userInformation.setResumes(resumes);
+        userInformation.setNumFlashcards(flashcards.size());
+        userInformation.setNumResumes(resumes.size());
+
+        return userInformation;
+    }
+
 }

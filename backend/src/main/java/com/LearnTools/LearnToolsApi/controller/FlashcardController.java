@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class FlashcardController {
         this.userRepository = userRepository;
     }
 
+    @CrossOrigin
     @GetMapping()
     public List<FlashcardResponseDTO> getFlashcards(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
@@ -56,9 +58,9 @@ public class FlashcardController {
         Flashcard flashcard = new Flashcard(flashcardDTO.getQuestion(), flashcardDTO.getAnswer());
 
         flashcard.setUser(userRepository.findByUsername(userDetails.getUsername()));
-
-        createFlashcardTag(flashcardDTO, userDetails, flashcard);
         repository.save(flashcard);
+        createFlashcardTag(flashcardDTO, userDetails, flashcard);
+
     }
 
     private void createFlashcardTag(FlashcardDTO flashcardDTO, UserDetails userDetails, Flashcard flashcard) {

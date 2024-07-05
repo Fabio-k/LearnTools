@@ -1,14 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import resumesService from "../app/services/resumeService";
-import topicService from "../app/services/topicService";
-import ResumeCard from "../components/ResumeCard";
-import ResmumesFormContent from "../components/ResumesFormContent";
-import TopicFormContent from "../components/TopicFormContent";
 
 const Resumes = () => {
-  const topicApiService = new topicService();
-
   const [dropdownOpen, setDropdown] = useState(false);
   const toggle = () => setDropdown(!dropdownOpen);
 
@@ -31,10 +25,9 @@ const Resumes = () => {
     const fetchResumes = async () => {
       setIsLoadingContent(true);
       const resumeData = await new resumesService().get();
-      const topicData = await topicApiService.get();
+
       setIsLoadingContent(false);
 
-      setTopics(topicData);
       setResumes(resumeData);
     };
     fetchResumes();

@@ -4,7 +4,7 @@ import logo from "../logo.svg";
 const Header = () => {
   return (
     <header className={style.headerStyle}>
-      <Link to={"/"}>
+      <Link to={"/home"}>
         <img src={logo} alt="logo image" className={style.logo} />
       </Link>
       <section className={style.links}>
