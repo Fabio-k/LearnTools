@@ -1,6 +1,6 @@
-package com.LearnTools.LearnToolsApi.controller.dto;
+package com.LearnTools.LearnToolsApi.controller.dto.Request;
 
-public class MessageDTO {
+public class MessageRequest {
     private Integer resumeID;
     private String message;
     private Integer assistentID;

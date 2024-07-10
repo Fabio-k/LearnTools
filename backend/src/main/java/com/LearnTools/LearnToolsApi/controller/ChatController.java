@@ -2,8 +2,8 @@ package com.LearnTools.LearnToolsApi.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.LearnTools.LearnToolsApi.controller.dto.AiResumeResponse;
-import com.LearnTools.LearnToolsApi.controller.dto.MessageDTO;
+import com.LearnTools.LearnToolsApi.controller.dto.Request.MessageRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.AiResumeResponse;
 import com.LearnTools.LearnToolsApi.services.ChatService;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +24,7 @@ public class ChatController {
 
     @PostMapping()
     public AiResumeResponse postChat(@AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody MessageDTO messageDTO,
+            @RequestBody MessageRequest messageDTO,
             @RequestParam(required = false) Integer id) {
 
         if (id != null) {

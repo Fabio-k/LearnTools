@@ -1,17 +1,18 @@
-package com.LearnTools.LearnToolsApi.controller.dto;
+package com.LearnTools.LearnToolsApi.controller.dto.Response;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.LearnTools.LearnToolsApi.controller.dto.TagReqRes;
 import com.LearnTools.LearnToolsApi.model.entidades.Resume;
 
-public class ResumesResponseDTO {
+public class ResumesResponse {
 
     private String title;
     private String resume;
     private Integer id;
-    private List<TagDTO> tags = new ArrayList<>();
+    private List<TagReqRes> tags = new ArrayList<>();
 
     public String getTitle() {
         return title;
@@ -29,11 +30,11 @@ public class ResumesResponseDTO {
         this.resume = resume;
     }
 
-    public List<TagDTO> getTags() {
+    public List<TagReqRes> getTags() {
         return tags;
     }
 
-    public void setTagsResponse(List<TagDTO> tags) {
+    public void setTagsResponse(List<TagReqRes> tags) {
         this.tags = tags;
     }
 
@@ -45,13 +46,14 @@ public class ResumesResponseDTO {
         return id;
     }
 
-    public static ResumesResponseDTO fromEntity(Resume resume) {
-        ResumesResponseDTO resumesDTO = new ResumesResponseDTO();
+    public static ResumesResponse fromEntity(Resume resume) {
+        ResumesResponse resumesDTO = new ResumesResponse();
         resumesDTO.setTitle(resume.getTitle());
         resumesDTO.setResume(resume.getDescription());
         resumesDTO.setId(resume.getId());
         resumesDTO
-                .setTagsResponse(resume.getResumeTags().stream().map(TagDTO::fromEntity).collect(Collectors.toList()));
+                .setTagsResponse(
+                        resume.getResumeTags().stream().map(TagReqRes::fromEntity).collect(Collectors.toList()));
         return resumesDTO;
     }
 

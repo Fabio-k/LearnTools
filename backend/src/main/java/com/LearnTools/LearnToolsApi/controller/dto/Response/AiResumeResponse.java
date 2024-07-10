@@ -1,4 +1,4 @@
-package com.LearnTools.LearnToolsApi.controller.dto;
+package com.LearnTools.LearnToolsApi.controller.dto.Response;
 
 public class AiResumeResponse {
     private Message message;

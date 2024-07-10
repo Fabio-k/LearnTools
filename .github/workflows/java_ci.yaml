@@ -2,11 +2,11 @@ name: Java CI
 
 on:
   push:
-    branches: [backend]
+    branches: [backend, dev]
     paths:
       - "backend/**"
   pull_request:
-    branches: [backend]
+    branches: [backend, dev]
     paths:
       - "backend/**"
 jobs:

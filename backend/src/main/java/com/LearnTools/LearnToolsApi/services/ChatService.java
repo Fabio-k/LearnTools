@@ -11,15 +11,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.LearnTools.LearnToolsApi.client.AiClient;
-import com.LearnTools.LearnToolsApi.controller.dto.AiResumeRequest;
-import com.LearnTools.LearnToolsApi.controller.dto.AiResumeResponse;
-import com.LearnTools.LearnToolsApi.controller.dto.MessageDTO;
-import com.LearnTools.LearnToolsApi.controller.dto.Messages;
+import com.LearnTools.LearnToolsApi.controller.dto.Request.AiResumeRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Request.MessageRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.AiResumeResponse;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.MessagesResponse;
 import com.LearnTools.LearnToolsApi.handler.BusinessException;
 import com.LearnTools.LearnToolsApi.model.entidades.Chat;
 import com.LearnTools.LearnToolsApi.model.entidades.MessagesEntity;
 import com.LearnTools.LearnToolsApi.model.entidades.Prompt;
 import com.LearnTools.LearnToolsApi.model.entidades.Resume;
+import com.LearnTools.LearnToolsApi.model.entidades.User;
 import com.LearnTools.LearnToolsApi.model.repository.ChatRepository;
 import com.LearnTools.LearnToolsApi.model.repository.MessagesRepository;
 import com.LearnTools.LearnToolsApi.model.repository.PromptRepository;
@@ -34,6 +35,8 @@ public class ChatService {
     private final UserRepository userRepository;
     private final ResumeRepository resumeRepository;
 
+    private final UserService userService;
+
     private final AiClient aiClient;
 
     private final String RESUME_PROMPT = "prompt resume base";
@@ -44,16 +47,17 @@ public class ChatService {
 
     public ChatService(MessagesRepository messagesRepository, ChatRepository chatRepository,
             PromptRepository promptRepository, UserRepository userRepository, ResumeRepository resumeRepository,
-            AiClient aiClient) {
+            UserService userService, AiClient aiClient) {
         this.messagesRepository = messagesRepository;
         this.chatRepository = chatRepository;
         this.promptRepository = promptRepository;
         this.userRepository = userRepository;
         this.resumeRepository = resumeRepository;
+        this.userService = userService;
         this.aiClient = aiClient;
     }
 
-    public AiResumeResponse handleAiChatReponse(UserDetails userDetails, MessageDTO messageDTO, Integer id) {
+    public AiResumeResponse handleAiChatReponse(UserDetails userDetails, MessageRequest messageDTO, Integer id) {
         List<Chat> userChats = getUserChats(userDetails);
         Optional<Chat> matchChat = userChats.stream().filter(c -> c.getId() == id).findFirst();
         if (matchChat.isEmpty())
@@ -64,7 +68,7 @@ public class ChatService {
         List<MessagesEntity> messagesEntityList = messagesRepository.findAllByChatId(matchChat.get().getId());
         messagesEntityList.sort(Comparator.comparing(MessagesEntity::getTimestamp));
 
-        List<Messages> messagesList = messagesEntityList.stream().map(Messages::fromEntity)
+        List<MessagesResponse> messagesList = messagesEntityList.stream().map(MessagesResponse::fromEntity)
                 .collect(Collectors.toList());
         AiResumeResponse aiResumeResponse = createAiResumeResponse(messageDTO, messagesList, matchChat.get());
         saveMessage(matchChat.get(), aiResumeResponse);
@@ -72,7 +76,7 @@ public class ChatService {
 
     }
 
-    public AiResumeResponse handleNewChat(UserDetails userDetails, MessageDTO messageDTO) {
+    public AiResumeResponse handleNewChat(UserDetails userDetails, MessageRequest messageDTO) {
         List<Resume> userResumes = getUserResumes(userDetails);
         Optional<Resume> matchResume = userResumes.stream().filter(r -> r.getId() == messageDTO.getResumeID())
                 .findFirst();
@@ -90,15 +94,17 @@ public class ChatService {
 
         Chat chat = new Chat();
         chat.setTitle(matchResume.get().getTitle());
-        chat.setUser(userRepository.findByUsername(userDetails.getUsername()));
+
+        User user = userService.getUser(userDetails.getUsername());
+        chat.setUser(user);
         chatRepository.save(chat);
 
         MessagesEntity systemMessage = saveMessage(chat, matchBase.getPrompt(), "system");
-        Messages messages = new Messages();
+        MessagesResponse messages = new MessagesResponse();
         messages.setRole(systemMessage.getOrigin());
         messages.setContent(systemMessage.getMessage());
 
-        List<Messages> listMessages = new ArrayList<>();
+        List<MessagesResponse> listMessages = new ArrayList<>();
         listMessages.add(messages);
         AiResumeResponse aiResponse = createAiResumeResponse(messageDTO, listMessages, chat);
         saveMessage(chat, aiResponse);
@@ -106,7 +112,8 @@ public class ChatService {
         return aiResponse;
     }
 
-    private AiResumeResponse createAiResumeResponse(MessageDTO messageDTO, List<Messages> listMessages, Chat chat) {
+    private AiResumeResponse createAiResumeResponse(MessageRequest messageDTO, List<MessagesResponse> listMessages,
+            Chat chat) {
         AiResumeRequest aiResumeRequest = new AiResumeRequest();
         aiResumeRequest.setModel(messageDTO.getModel());
         aiResumeRequest.setMessages(listMessages);

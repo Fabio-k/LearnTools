@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.LearnTools.LearnToolsApi.controller.dto.FlashcardDTO;
-import com.LearnTools.LearnToolsApi.controller.dto.FlashcardResponseDTO;
+import com.LearnTools.LearnToolsApi.controller.dto.Request.FlashcardRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.FlashcardResponse;
 import com.LearnTools.LearnToolsApi.services.FlashcardService;
 
 @RestController
@@ -27,14 +27,14 @@ public class FlashcardController {
     }
 
     @GetMapping()
-    public List<FlashcardResponseDTO> getFlashcards(@AuthenticationPrincipal UserDetails userDetails) {
+    public List<FlashcardResponse> getFlashcards(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
         return flashcardService.getFlashcards(username);
     }
 
     @Transactional
     @PostMapping()
-    public void postFlashcard(@RequestBody FlashcardDTO flashcardDTO,
+    public void postFlashcard(@RequestBody FlashcardRequest flashcardDTO,
             @AuthenticationPrincipal UserDetails userDetails) {
         flashcardService.postFlashcard(flashcardDTO, userDetails.getUsername());
     }

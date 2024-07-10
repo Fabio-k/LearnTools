@@ -4,14 +4,14 @@ import com.LearnTools.LearnToolsApi.model.entidades.FlashCardTag;
 import com.LearnTools.LearnToolsApi.model.entidades.ResumeTag;
 import com.LearnTools.LearnToolsApi.model.entidades.Tag;
 
-public class TagDTO {
+public class TagReqRes {
     private String name;
     private String color;
 
-    public TagDTO() {
+    public TagReqRes() {
     }
 
-    public TagDTO(String name, String color) {
+    public TagReqRes(String name, String color) {
         this.name = name;
         this.color = color;
     }
@@ -32,22 +32,22 @@ public class TagDTO {
         this.color = color;
     }
 
-    public static TagDTO createTag(Tag tag) {
-        TagDTO dto = new TagDTO();
+    public static TagReqRes createTag(Tag tag) {
+        TagReqRes dto = new TagReqRes();
         dto.setName(tag.getName());
         dto.setColor(tag.getColor());
         return dto;
     }
 
-    public static TagDTO fromEntity(FlashCardTag flashCardTag) {
+    public static TagReqRes fromEntity(FlashCardTag flashCardTag) {
         return createTag(flashCardTag.getTag());
     }
 
-    public static TagDTO fromEntity(ResumeTag resumeTag) {
+    public static TagReqRes fromEntity(ResumeTag resumeTag) {
         return createTag(resumeTag.getTag());
     }
 
-    public static TagDTO fromEntity(Tag tag) {
+    public static TagReqRes fromEntity(Tag tag) {
         return createTag(tag);
     }
 

@@ -1,8 +1,8 @@
-package com.LearnTools.LearnToolsApi.controller.dto;
+package com.LearnTools.LearnToolsApi.controller.dto.Response;
 
 import com.LearnTools.LearnToolsApi.model.entidades.MessagesEntity;
 
-public class Messages {
+public class MessagesResponse {
     private String role;
     private String content;
 
@@ -22,8 +22,8 @@ public class Messages {
         this.content = content;
     }
 
-    public static Messages fromEntity(MessagesEntity messagesEntity) {
-        Messages messages = new Messages();
+    public static MessagesResponse fromEntity(MessagesEntity messagesEntity) {
+        MessagesResponse messages = new MessagesResponse();
         messages.setRole(messagesEntity.getOrigin());
         messages.setContent(messagesEntity.getMessage());
         return messages;

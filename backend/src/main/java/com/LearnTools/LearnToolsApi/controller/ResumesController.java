@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.LearnTools.LearnToolsApi.controller.dto.ResumesDTO;
-import com.LearnTools.LearnToolsApi.controller.dto.ResumesResponseDTO;
+import com.LearnTools.LearnToolsApi.controller.dto.Request.ResumesRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.ResumesResponse;
 
 import java.util.List;
 
@@ -33,9 +33,9 @@ public class ResumesController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ResumesResponseDTO>> getMethodName(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<List<ResumesResponse>> getMethodName(@AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(required = false) Integer id) {
-        List<ResumesResponseDTO> userResumesFormatted = resumesService.getUserResumes(userDetails);
+        List<ResumesResponse> userResumesFormatted = resumesService.getUserResumes(userDetails);
         return ResponseEntity.ok(userResumesFormatted);
     }
 
@@ -51,7 +51,7 @@ public class ResumesController {
     @PostMapping()
     @Transactional
     public ResponseEntity<Resume> postResume(@AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody ResumesDTO resumesDTO) {
+            @RequestBody ResumesRequest resumesDTO) {
 
         return ResponseEntity.ok(resumesService.createResume(resumesDTO, userDetails));
     }

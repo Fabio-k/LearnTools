@@ -1,17 +1,17 @@
-package com.LearnTools.LearnToolsApi.controller.dto;
+package com.LearnTools.LearnToolsApi.controller.dto.Request;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResumesDTO {
+public class ResumesRequest {
     private String title;
     private String resume;
     private List<String> tagName = new ArrayList<>();
 
-    public ResumesDTO() {
+    public ResumesRequest() {
     }
 
-    public ResumesDTO(String title, String resume, List<String> tagName) {
+    public ResumesRequest(String title, String resume, List<String> tagName) {
         this.title = title;
         this.resume = resume;
         this.tagName = tagName;

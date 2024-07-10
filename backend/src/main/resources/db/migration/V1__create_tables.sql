@@ -3,23 +3,9 @@ CREATE TABLE tab_user (
     usr_name VARCHAR(30) NOT NULL,
     usr_username VARCHAR(30) NOT NULL UNIQUE,
     usr_password VARCHAR(60) NOT NULL,
+    usr_role VARCHAR(20) NOT NULL,
     usr_img VARCHAR(30)
 );
-
-CREATE TABLE role (
-    rol_id SERIAL PRIMARY KEY,
-    rol_name VARCHAR(30) NOT NULL
-);
-
-CREATE TABLE tab_user_roles (
-    url_id SERIAL PRIMARY KEY,
-    url_usr_id INT NOT NULL,
-    url_rol_id INT NOT NULL,
-    FOREIGN KEY (url_usr_id) REFERENCES tab_user(usr_id),
-    FOREIGN KEY (url_rol_id) REFERENCES role(rol_id)
-);
-
-
 
 CREATE TABLE prompt(
     prt_id SERIAL PRIMARY KEY,

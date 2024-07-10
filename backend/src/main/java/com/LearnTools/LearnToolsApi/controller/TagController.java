@@ -7,7 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.LearnTools.LearnToolsApi.controller.dto.TagDTO;
+import com.LearnTools.LearnToolsApi.controller.dto.TagReqRes;
 import com.LearnTools.LearnToolsApi.model.entidades.Tag;
 import com.LearnTools.LearnToolsApi.services.TagService;
 
@@ -30,7 +30,7 @@ public class TagController {
 
     @CrossOrigin
     @GetMapping()
-    public List<TagDTO> getTags(@AuthenticationPrincipal UserDetails userDetails) {
+    public List<TagReqRes> getTags(@AuthenticationPrincipal UserDetails userDetails) {
         return tagService.getTagsDto(userDetails.getUsername());
     }
 
@@ -39,8 +39,9 @@ public class TagController {
         tagService.deleteTag(userDetails.getUsername(), tagName);
     }
 
+    @CrossOrigin
     @PostMapping()
-    public ResponseEntity<Tag> postTag(@RequestBody TagDTO tagDTO,
+    public ResponseEntity<Tag> postTag(@RequestBody TagReqRes tagDTO,
             @AuthenticationPrincipal UserDetails userDetails) {
 
         return ResponseEntity.ok(tagService.createTag(tagDTO, userDetails.getUsername()));

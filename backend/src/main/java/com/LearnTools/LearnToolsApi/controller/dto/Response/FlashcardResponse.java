@@ -1,15 +1,16 @@
-package com.LearnTools.LearnToolsApi.controller.dto;
+package com.LearnTools.LearnToolsApi.controller.dto.Response;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.LearnTools.LearnToolsApi.controller.dto.TagReqRes;
 import com.LearnTools.LearnToolsApi.model.entidades.Flashcard;
 
-public class FlashcardResponseDTO {
+public class FlashcardResponse {
     private String question;
     private String answer;
     private String username;
-    private List<TagDTO> tags;
+    private List<TagReqRes> tags;
 
     public String getAnswer() {
         return answer;
@@ -35,21 +36,21 @@ public class FlashcardResponseDTO {
         this.username = username;
     }
 
-    public List<TagDTO> getTags() {
+    public List<TagReqRes> getTags() {
         return tags;
     }
 
-    public void setTags(List<TagDTO> tags) {
+    public void setTags(List<TagReqRes> tags) {
         this.tags = tags;
     }
 
-    public static FlashcardResponseDTO fromEntity(Flashcard flashcard) {
-        FlashcardResponseDTO dto = new FlashcardResponseDTO();
+    public static FlashcardResponse fromEntity(Flashcard flashcard) {
+        FlashcardResponse dto = new FlashcardResponse();
         dto.setQuestion(flashcard.getQuestion());
         dto.setAnswer(flashcard.getAnswer());
         dto.setUsername(flashcard.getUser().getUsername());
         dto.setTags(flashcard.getFlashCardTags().stream()
-                .map(TagDTO::fromEntity).collect(Collectors.toList()));
+                .map(TagReqRes::fromEntity).collect(Collectors.toList()));
         return dto;
     }
 }

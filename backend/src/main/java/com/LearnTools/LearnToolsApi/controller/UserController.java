@@ -2,92 +2,42 @@ package com.LearnTools.LearnToolsApi.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.LearnTools.LearnToolsApi.controller.dto.UserDTO;
-import com.LearnTools.LearnToolsApi.controller.dto.UserInformation;
-import com.LearnTools.LearnToolsApi.handler.BusinessException;
+import com.LearnTools.LearnToolsApi.controller.dto.Request.SignInRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Request.SignUpRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.JwtAuthenticationResponse;
 import com.LearnTools.LearnToolsApi.handler.CampoObrigatorioException;
-import com.LearnTools.LearnToolsApi.model.entidades.Role;
-import com.LearnTools.LearnToolsApi.model.entidades.User;
-import com.LearnTools.LearnToolsApi.model.entidades.UserRoles;
-import com.LearnTools.LearnToolsApi.model.entidades.Flashcard;
-import com.LearnTools.LearnToolsApi.model.entidades.Resume;
-import com.LearnTools.LearnToolsApi.model.repository.FlashcardRepository;
-import com.LearnTools.LearnToolsApi.model.repository.ResumeRepository;
-import com.LearnTools.LearnToolsApi.model.repository.RolesRepository;
-import com.LearnTools.LearnToolsApi.model.repository.UserRepository;
-import com.LearnTools.LearnToolsApi.model.repository.UserRolesRepository;
+import com.LearnTools.LearnToolsApi.services.AuthenticationService;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 public class UserController {
-    private final UserRepository repository;
-    private final UserRolesRepository userRolesRepository;
-    private final RolesRepository rolesRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final FlashcardRepository flashcardRepository;
-    private final ResumeRepository resumeRepository;
+    private final AuthenticationService authenticationService;
 
-    public UserController(UserRepository repository, UserRolesRepository userRolesRepository,
-            RolesRepository rolesRepository, PasswordEncoder passwordEncoder, FlashcardRepository flashcardRepository,
-            ResumeRepository resumeRepository) {
-        this.repository = repository;
-        this.userRolesRepository = userRolesRepository;
-        this.rolesRepository = rolesRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.flashcardRepository = flashcardRepository;
-        this.resumeRepository = resumeRepository;
-    }
-
-    @PostMapping("/signup")
-    @Transactional
-    public void postUser(@RequestBody UserDTO userDTO) {
-        if (userDTO.getUsername() == null)
-            throw new CampoObrigatorioException("username");
-        if (userDTO.getPassword() == null)
-            throw new CampoObrigatorioException("password");
-        User user = new User(userDTO.getName(), userDTO.getUsername(), passwordEncoder.encode(userDTO.getPassword()));
-        repository.save(user);
-        Role role = rolesRepository.findByName("USER");
-        if (role == null)
-            throw new BusinessException("role not found");
-        UserRoles userRoles = new UserRoles();
-        userRoles.setRole(role);
-        userRoles.setUser(user);
-        userRolesRepository.save(userRoles);
-    }
-
-    @DeleteMapping("/user")
-    @Transactional
-    public void deleteUser(@AuthenticationPrincipal UserDetails userDetails) {
-        repository.deleteByUsername(userDetails.getUsername());
+    public UserController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 
     @CrossOrigin
-    @PostMapping("/login")
-    public UserInformation postMethodName(@AuthenticationPrincipal UserDetails userDetails) {
-        String username = userDetails.getUsername();
-        List<Flashcard> flashcards = flashcardRepository.findAllByUserUsername(username);
-        List<Resume> resumes = resumeRepository.findAllByUserUsername(username);
+    @PostMapping("/signup")
+    @Transactional
+    public ResponseEntity<JwtAuthenticationResponse> postUser(@RequestBody SignUpRequest request) {
+        if (request.getUsername() == null)
+            throw new CampoObrigatorioException("username");
+        if (request.getPassword() == null)
+            throw new CampoObrigatorioException("password");
+        return ResponseEntity.ok(authenticationService.signup(request));
+    }
 
-        UserInformation userInformation = new UserInformation();
-        userInformation.setUsername(username);
-        userInformation.setFlashcards(flashcards);
-        userInformation.setResumes(resumes);
-        userInformation.setNumFlashcards(flashcards.size());
-        userInformation.setNumResumes(resumes.size());
-
-        return userInformation;
+    @CrossOrigin
+    @PostMapping("/signin")
+    public ResponseEntity<JwtAuthenticationResponse> postMethodName(@RequestBody SignInRequest request) {
+        return ResponseEntity.ok(authenticationService.signIn(request));
     }
 
 }

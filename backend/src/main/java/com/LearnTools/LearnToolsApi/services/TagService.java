@@ -6,21 +6,22 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.LearnTools.LearnToolsApi.controller.dto.TagDTO;
+import com.LearnTools.LearnToolsApi.controller.dto.TagReqRes;
 import com.LearnTools.LearnToolsApi.handler.BusinessException;
 import com.LearnTools.LearnToolsApi.handler.CampoObrigatorioException;
 import com.LearnTools.LearnToolsApi.model.entidades.Tag;
+import com.LearnTools.LearnToolsApi.model.entidades.User;
 import com.LearnTools.LearnToolsApi.model.repository.TagRepository;
-import com.LearnTools.LearnToolsApi.model.repository.UserRepository;
 
 @Service
 public class TagService {
     private final TagRepository tagRepository;
-    private final UserRepository userRepository;
 
-    public TagService(TagRepository tagRepository, UserRepository userRepository) {
+    private final UserService userService;
+
+    public TagService(TagRepository tagRepository, UserService userService) {
         this.tagRepository = tagRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public List<Tag> getUserTags(String username) {
@@ -28,9 +29,9 @@ public class TagService {
         return tags;
     }
 
-    public List<TagDTO> getTagsDto(String username) {
+    public List<TagReqRes> getTagsDto(String username) {
         List<Tag> tags = getUserTags(username);
-        return tags.stream().map(TagDTO::fromEntity).collect(Collectors.toList());
+        return tags.stream().map(TagReqRes::fromEntity).collect(Collectors.toList());
     }
 
     public void deleteTag(String username, String tagName) {
@@ -49,14 +50,16 @@ public class TagService {
         tagRepository.delete(selectedTag.get());
     }
 
-    public Tag createTag(TagDTO tagDTO, String username) {
+    public Tag createTag(TagReqRes tagDTO, String username) {
         if (tagDTO.getName() == null)
             throw new CampoObrigatorioException("nome");
         if (tagDTO.getColor() == null)
             throw new CampoObrigatorioException("cor");
 
         Tag tag = new Tag(tagDTO.getName(), tagDTO.getColor());
-        tag.setUser(userRepository.findByUsername(username));
+
+        User user = userService.getUser(username);
+        tag.setUser(user);
         return tagRepository.save(tag);
     }
 }
