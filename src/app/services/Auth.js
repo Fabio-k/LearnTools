@@ -11,8 +11,8 @@ export default class Auth extends Api {
     return this.post("");
   }
 
-  async sendGithubCode(code) {
+  async sendGithubCode(request) {
     this.baseUrl = routes.github;
-    return this.post(code);
+    return this.post(request);
   }
 }

@@ -7,11 +7,11 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.LearnTools.LearnToolsApi.model.entidades.User;
 import com.LearnTools.LearnToolsApi.services.JwtService;
 import com.LearnTools.LearnToolsApi.services.UserService;
 
@@ -45,11 +45,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwt = authHeader.substring(7);
         username = jwtService.extractUserName(jwt);
         if (StringUtils.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            User user = (User) userService.userDetailsService().loadUserByUsername(username);
+
+            if (jwtService.isTokenValid(jwt, user)) {
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
-                        null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user,
+                        null, user.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 context.setAuthentication(authToken);
                 SecurityContextHolder.setContext(context);

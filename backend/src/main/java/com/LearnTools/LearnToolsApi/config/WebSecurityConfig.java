@@ -29,12 +29,9 @@ public class WebSecurityConfig {
     }
 
     public static final String[] ENDPOINTS_WHITELIST = {
-            "/assistents/**",
+            "/github",
             "/signup",
-            "/signin",
-            "/swagger-ui/**",
-            "/v2/api-docs",
-            "/webjars/**"
+            "/signin"
     };
 
     @Bean

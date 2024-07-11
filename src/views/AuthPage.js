@@ -19,7 +19,11 @@ const AuthPage = () => {
     const authService = new Auth();
     console.log(code);
     if (code) {
-      authService.sendGithubCode(code);
+      const request = {
+        code: code,
+        clientId: clientId,
+      };
+      const response = authService.sendGithubCode(request);
     }
   }, []);
 

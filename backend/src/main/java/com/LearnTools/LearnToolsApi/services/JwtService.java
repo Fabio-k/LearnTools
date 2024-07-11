@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.LearnTools.LearnToolsApi.handler.BusinessException;
+import com.LearnTools.LearnToolsApi.model.entidades.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,13 +27,20 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String getLoginMethod(String jwt) {
+        Claims claims = extractAllClaims(jwt);
+        return claims.get("loginMethod", String.class);
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public String generateToken(User user) {
+        return generateToken(new HashMap<>(), user);
+    }
+
+    public boolean isTokenValid(String token, User user) {
         final String username = extractUserName(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        String authenticateUser = user.getUsername();
+
+        return (username.equals(authenticateUser)) && !isTokenExpired(token);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
@@ -39,8 +48,9 @@ public class JwtService {
         return claimsResolvers.apply(claims);
     }
 
-    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+    private String generateToken(Map<String, Object> extraClaims, User user) {
+        String username = user.getUsername();
+        return Jwts.builder().setClaims(extraClaims).setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSiginingKey(), SignatureAlgorithm.HS256).compact();

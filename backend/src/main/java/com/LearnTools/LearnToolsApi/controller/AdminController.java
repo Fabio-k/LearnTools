@@ -11,7 +11,6 @@ import com.LearnTools.LearnToolsApi.model.repository.UserRepository;
 
 import java.util.List;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

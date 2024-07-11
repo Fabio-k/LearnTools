@@ -25,14 +25,12 @@ import com.LearnTools.LearnToolsApi.model.repository.ChatRepository;
 import com.LearnTools.LearnToolsApi.model.repository.MessagesRepository;
 import com.LearnTools.LearnToolsApi.model.repository.PromptRepository;
 import com.LearnTools.LearnToolsApi.model.repository.ResumeRepository;
-import com.LearnTools.LearnToolsApi.model.repository.UserRepository;
 
 @Service
 public class ChatService {
     private final MessagesRepository messagesRepository;
     private final ChatRepository chatRepository;
     private final PromptRepository promptRepository;
-    private final UserRepository userRepository;
     private final ResumeRepository resumeRepository;
 
     private final UserService userService;
@@ -46,12 +44,11 @@ public class ChatService {
     private final String ROLE_USER = "user";
 
     public ChatService(MessagesRepository messagesRepository, ChatRepository chatRepository,
-            PromptRepository promptRepository, UserRepository userRepository, ResumeRepository resumeRepository,
+            PromptRepository promptRepository, ResumeRepository resumeRepository,
             UserService userService, AiClient aiClient) {
         this.messagesRepository = messagesRepository;
         this.chatRepository = chatRepository;
         this.promptRepository = promptRepository;
-        this.userRepository = userRepository;
         this.resumeRepository = resumeRepository;
         this.userService = userService;
         this.aiClient = aiClient;

@@ -1,10 +1,11 @@
 CREATE TABLE tab_user (
     usr_id SERIAL PRIMARY KEY,
     usr_name VARCHAR(30) NOT NULL,
-    usr_username VARCHAR(30) NOT NULL UNIQUE,
-    usr_password VARCHAR(60) NOT NULL,
+    usr_username VARCHAR(30) UNIQUE,
+    usr_password VARCHAR(60),
     usr_role VARCHAR(20) NOT NULL,
-    usr_img VARCHAR(30)
+    usr_img VARCHAR(255),
+    usr_github_username VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE prompt(

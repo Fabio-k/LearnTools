@@ -2,6 +2,7 @@ package com.LearnTools.LearnToolsApi.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.LearnTools.LearnToolsApi.controller.dto.Request.GithubSignInRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.SignInRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.SignUpRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.JwtAuthenticationResponse;
@@ -38,6 +39,12 @@ public class UserController {
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> postMethodName(@RequestBody SignInRequest request) {
         return ResponseEntity.ok(authenticationService.signIn(request));
+    }
+
+    @CrossOrigin
+    @PostMapping("/github")
+    public ResponseEntity<JwtAuthenticationResponse> postMethodName(@RequestBody GithubSignInRequest request) {
+        return ResponseEntity.ok(authenticationService.loginGithub(request));
     }
 
 }

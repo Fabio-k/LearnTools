@@ -15,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tab_user")
@@ -28,12 +27,13 @@ public class User implements UserDetails {
     @Column(length = 50, name = "usr_name")
     private String name;
 
-    @Column(length = 50, name = "usr_username", nullable = false)
-    @NotNull
+    @Column(length = 50, name = "usr_username")
     private String username;
 
-    @Column(length = 100, name = "usr_password", nullable = false)
-    @NotNull
+    @Column(length = 255, name = "usr_github_username")
+    private String githubUsername;
+
+    @Column(length = 100, name = "usr_password")
     private String password;
 
     @Column(length = 20, name = "usr_role")
@@ -129,4 +129,21 @@ public class User implements UserDetails {
     public void setChats(List<Chat> chats) {
         this.chats = chats;
     }
+
+    public String getGithubUsername() {
+        return githubUsername;
+    }
+
+    public void setGithubUsername(String githubUsername) {
+        this.githubUsername = githubUsername;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
 }
