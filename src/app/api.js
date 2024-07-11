@@ -6,7 +6,7 @@ export const aiModel = {
 export const routes = {
   assistent: `${server}/assistents/{id}/ask`,
   resumes: `${server}/resumes`,
-  login: `${server}/login`,
+  login: `${server}/signin`,
   github: `${server}/github`,
 };
 
@@ -18,16 +18,11 @@ class Api {
     this.baseUrl = "";
   }
 
-  setBasicAuth(username, password) {
-    let token;
-    if (username !== undefined && password !== undefined) {
-      token = btoa(`${username}:${password}`);
-    } else {
-      const storedUsername = localStorage.getItem("user");
-      const storedPassword = localStorage.getItem("password");
-      token = btoa(`${storedUsername}:${storedPassword}`);
+  setAuthentication() {
+    let token = localStorage.getItem("token");
+    if (token) {
+      this.headers["Authorization"] = `Bearer ${token}`;
     }
-    this.headers["Authorization"] = `Basic ${token}`;
   }
 
   async post(objeto) {

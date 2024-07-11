@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,12 +27,14 @@ public class FlashcardController {
         this.flashcardService = flashcardService;
     }
 
+    @CrossOrigin
     @GetMapping()
     public List<FlashcardResponse> getFlashcards(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
         return flashcardService.getFlashcards(username);
     }
 
+    @CrossOrigin
     @Transactional
     @PostMapping()
     public void postFlashcard(@RequestBody FlashcardRequest flashcardDTO,
@@ -39,6 +42,7 @@ public class FlashcardController {
         flashcardService.postFlashcard(flashcardDTO, userDetails.getUsername());
     }
 
+    @CrossOrigin
     @DeleteMapping("/{flashcardid}")
     public void deleteFlashcard(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String flashcardid) {
         flashcardService.deleteFlashcard(userDetails.getUsername(), Integer.parseInt(flashcardid));

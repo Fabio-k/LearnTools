@@ -17,14 +17,24 @@ const AuthPage = () => {
   useEffect(() => {
     const { code } = queryString.parse(window.location.search);
     const authService = new Auth();
-    console.log(code);
-    if (code) {
-      const request = {
-        code: code,
-        clientId: clientId,
-      };
-      const response = authService.sendGithubCode(request);
-    }
+    const authentcaGithubUser = async (code) => {
+      if (code) {
+        const request = {
+          code: code,
+          clientId: clientId,
+        };
+        try {
+          const response = await authService.sendGithubCode(request);
+          if (response != undefined) {
+            localStorage.setItem("token", response["token"]);
+            navigate("/home", { userInformation: { response } });
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    };
+    authentcaGithubUser(code);
   }, []);
 
   const handleSubmitForm = async (event) => {
@@ -33,11 +43,10 @@ const AuthPage = () => {
     try {
       const response = await authService.getUserInformation(name, password);
       if (response != undefined) {
-        localStorage.setItem("user", name);
-        localStorage.setItem("password", password);
+        localStorage.setItem("token", response["token"]);
         navigate("/home", { userInformation: { response } });
       }
-      console.log(response);
+      console.log(response["token"]);
     } catch (e) {
       console.log("error no post" + e);
       setLoginError(true);
@@ -52,7 +61,11 @@ const AuthPage = () => {
       </div>
       <main className={styles.contentContainer}>
         <form action="" method="post" onSubmit={handleSubmitForm}>
-          <h1>Fazer Login</h1>
+          <div className={styles.authHeader}>
+            <h1 style={{ width: "100%" }}>Fazer Login</h1>
+            <p>Não está cadastrdo? cadastrar</p>
+          </div>
+
           <input
             type="text"
             placeholder="Digite seu usuário"
@@ -73,18 +86,30 @@ const AuthPage = () => {
             autoComplete="off"
             className={loginError ? styles.loginError : undefined}
           />
-          <button className={styles.loginButton}>Login</button>
 
-          <p>ou</p>
+          <button type="submit" className={styles.loginButton}>
+            Login
+          </button>
+
+          <div className={styles.authDivider}>
+            <div className={styles.divider}></div>
+            <p style={{ padding: "10px" }}>ou</p>
+            <div className={styles.divider}></div>
+          </div>
           <button
             className={`button ${styles.github}`}
-            onClick={() =>
-              (window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}`)
-            }
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
+            }}
           >
             <div className={styles.githubContent}>
               Continue com Github{" "}
-              <img style={{ height: "30px" }} src={githubLogo} alt="" />
+              <img
+                style={{ height: "30px" }}
+                src={githubLogo}
+                alt="Github Logo"
+              />
             </div>
           </button>
         </form>

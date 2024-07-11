@@ -7,7 +7,7 @@ export default class tagService extends Api {
   }
 
   async getTag() {
-    this.setBasicAuth();
+    this.setAuthentication();
     return await this.get();
   }
 }

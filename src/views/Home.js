@@ -3,7 +3,6 @@ import { Doughnut } from "react-chartjs-2";
 import { useLayout } from "../components/LayoutContext";
 import homeStyle from "../home.module.css";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
-import { useLocation } from "react-router-dom";
 import flashCardService from "../app/services/flashCardService";
 import tagService from "../app/services/tagService";
 Chart.register(ArcElement, Tooltip, Legend);
@@ -13,10 +12,10 @@ const sideMenu = () => {
 };
 
 const handleFlashcardAnalyze = (response) => {
-  console.log(response[0]);
+  console.log(response);
 };
 
-const FlashcardAnalytics = (flashcardResponse, tagResponse) => {
+const FlashcardAnalytics = ({ flashcardResponse, tagResponse }) => {
   const data = {
     labels: ["Red", "Blue", "Yellow"],
     datasets: [
@@ -41,12 +40,11 @@ const FlashcardAnalytics = (flashcardResponse, tagResponse) => {
     },
     cutout: "75%",
   };
-
   return (
     <>
       <p>analizes</p>
       <div className={homeStyle.flashcardChart}>
-        {flashcardResponse != undefined ? (
+        {Object.keys(flashcardResponse).length > 0 ? (
           <Doughnut
             data={data}
             style={{ maxHeight: "80%" }}
@@ -54,7 +52,7 @@ const FlashcardAnalytics = (flashcardResponse, tagResponse) => {
           />
         ) : (
           <h2>
-            Nem um resumo a vista!
+            Nem um resumo a vista !
             <br /> Crie um flashcard para obter estatísticas
           </h2>
         )}
@@ -93,7 +91,6 @@ export default function Home() {
         const flashcardResponse = await flashcardService.getFlashCards();
         setFlashcardData(flashcardResponse);
         const tamanho = Object.keys(flashcardResponse).length;
-        console.log(tamanho);
 
         const tagResponse = await tagSer.getTag();
         setTagData(tagResponse);

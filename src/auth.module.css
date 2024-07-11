@@ -21,19 +21,20 @@
 
 .contentContainer {
   display: flex;
-  flex-direction: column;
   background-color: white;
   height: 100%;
   width: 50%;
   padding: 10px;
   box-sizing: border-box;
+  align-items: center;
   justify-content: center;
 }
 
 .contentContainer form {
   display: flex;
   height: 60%;
-  width: 100%;
+  width: 60%;
+  box-sizing: border-box;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
@@ -41,12 +42,18 @@
 
 .contentContainer form input {
   display: block;
-  width: 50%;
+  width: 100%;
   margin-bottom: 20px;
   padding: 15px;
+  box-sizing: border-box;
   border-radius: 10px;
   border: 2px solid #ebebeb;
 }
+
+.authHeader {
+  width: 100%;
+}
+
 .contentContainer form button {
   display: block;
 }
@@ -70,6 +77,18 @@
   background-color: rgb(187, 113, 60);
 }
 
+.authDivider {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.divider {
+  height: 1px;
+  width: 40%;
+  background-color: lightsteelblue;
+}
 .github {
   display: flex;
   align-items: center;

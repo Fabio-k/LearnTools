@@ -6,7 +6,7 @@ export default class flashCardService extends Api {
     this.baseUrl = "http://localhost:8080/flashcards";
   }
   async getFlashCards() {
-    this.setBasicAuth();
+    this.setAuthentication();
     const response = await this.get();
     return response;
   }

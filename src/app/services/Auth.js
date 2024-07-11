@@ -6,9 +6,9 @@ export default class Auth extends Api {
     this.baseUrl = routes.login;
   }
 
-  async getUserInformation(name, password) {
-    this.setBasicAuth(name, password);
-    return this.post("");
+  async getUserInformation(name, userPassword) {
+    const request = { username: name, password: userPassword };
+    return this.post(request);
   }
 
   async sendGithubCode(request) {
