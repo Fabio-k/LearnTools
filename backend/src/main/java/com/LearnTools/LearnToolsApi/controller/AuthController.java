@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
-public class UserController {
+public class AuthController {
     private final AuthenticationService authenticationService;
 
-    public UserController(AuthenticationService authenticationService) {
+    public AuthController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 

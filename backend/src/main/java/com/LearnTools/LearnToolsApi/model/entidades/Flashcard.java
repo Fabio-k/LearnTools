@@ -1,6 +1,7 @@
 package com.LearnTools.LearnToolsApi.model.entidades;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -28,6 +29,15 @@ public class Flashcard {
 
     @Column(length = 300, name = "fls_ans")
     private String answer;
+
+    @Column(name = "fls_priority")
+    private Integer priority;
+
+    @Column(name = "fls_revision_date")
+    private Date revision_date;
+
+    @Column(name = "fls_creation_date")
+    private Date createdAt;
 
     @ManyToOne
     @JoinColumn(name = "fls_usr_id")

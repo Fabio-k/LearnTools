@@ -9,7 +9,6 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.LearnTools.LearnToolsApi.handler.BusinessException;
 import com.LearnTools.LearnToolsApi.model.entidades.User;
 
 import io.jsonwebtoken.Claims;

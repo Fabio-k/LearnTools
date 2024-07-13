@@ -18,7 +18,9 @@ CREATE TABLE flashcard(
     fls_id SERIAL PRIMARY KEY,
     fls_que VARCHAR(100),
     fls_ans VARCHAR(300) NOT NULL,
-    fls_review_date DATE,
+    fls_priority INT NOT NULL DEFAULT 0,
+    fls_revision_date DATE NOT NULL,
+    fls_creation_date DATE NOT NULL,
     fls_usr_id INT NOT NULL,
     FOREIGN KEY(fls_usr_id) REFERENCES tab_user(usr_id)
 );
@@ -33,7 +35,7 @@ CREATE TABLE resume(
 
 CREATE TABLE tag(
     tag_id SERIAL PRIMARY KEY,
-    tag_name VARCHAR(50) NOT NULL UNIQUE,
+    tag_name VARCHAR(50) NOT NULL,
     tag_color CHAR(9) NOT NULL, 
     tag_usr_id INT NOT NULL,
     FOREIGN KEY(tag_usr_id) REFERENCES tab_user(usr_id)
@@ -69,4 +71,18 @@ CREATE TABLE messages(
     msg_cht_id INT NOT NULL,
     msg_time TIMESTAMP,
     FOREIGN KEY(msg_cht_id) REFERENCES chat(cht_id)
+);
+
+CREATE TABLE flashcard_Revision(
+    flr_id SERIAL PRIMARY KEY,
+    flr_min_time TIMESTAMP,
+    flr_fls_id INT NOT NULL,
+    flr_rvd_id INT NOT NULL,
+    FOREIGN KEY(flr_fls_id) REFERENCES flashcard(fls_id),
+    FOREIGN KEY(flr_rvd_id) REFERENCES revision_dificulty(rvd_id)
+);
+
+CREATE TABLE revision_dificult(
+    rvd_id SERIAL PRIMARY KEY,
+    rvd_name VARCHAR(20)
 );
