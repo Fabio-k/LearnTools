@@ -5,22 +5,27 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.LearnTools.LearnToolsApi.client.AiClient;
+import com.LearnTools.LearnToolsApi.controller.dto.MessageDto;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.AiResumeRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.MessageRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.AiResumeResponse;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.ChatResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.MessagesResponse;
 import com.LearnTools.LearnToolsApi.handler.BusinessException;
+import com.LearnTools.LearnToolsApi.model.entidades.Assistent;
 import com.LearnTools.LearnToolsApi.model.entidades.Chat;
 import com.LearnTools.LearnToolsApi.model.entidades.MessagesEntity;
 import com.LearnTools.LearnToolsApi.model.entidades.Prompt;
 import com.LearnTools.LearnToolsApi.model.entidades.Resume;
 import com.LearnTools.LearnToolsApi.model.entidades.User;
+import com.LearnTools.LearnToolsApi.model.repository.AssistentRepository;
 import com.LearnTools.LearnToolsApi.model.repository.ChatRepository;
 import com.LearnTools.LearnToolsApi.model.repository.MessagesRepository;
 import com.LearnTools.LearnToolsApi.model.repository.PromptRepository;
@@ -32,6 +37,7 @@ public class ChatService {
     private final ChatRepository chatRepository;
     private final PromptRepository promptRepository;
     private final ResumeRepository resumeRepository;
+    private final AssistentRepository assistentRepository;
 
     private final UserService userService;
 
@@ -42,14 +48,16 @@ public class ChatService {
     private final String PROMPT_SUBSTITUTION = "$ASSISTENT_PROMPT";
     private final String RESUME_SUBSTITUTION = "$Resume";
     private final String ROLE_USER = "user";
+    private final String ROLE_SYSTEM = "system";
 
     public ChatService(MessagesRepository messagesRepository, ChatRepository chatRepository,
             PromptRepository promptRepository, ResumeRepository resumeRepository,
-            UserService userService, AiClient aiClient) {
+            AssistentRepository assistentRepository, UserService userService, AiClient aiClient) {
         this.messagesRepository = messagesRepository;
         this.chatRepository = chatRepository;
         this.promptRepository = promptRepository;
         this.resumeRepository = resumeRepository;
+        this.assistentRepository = assistentRepository;
         this.userService = userService;
         this.aiClient = aiClient;
     }
@@ -69,6 +77,7 @@ public class ChatService {
                 .collect(Collectors.toList());
         AiResumeResponse aiResumeResponse = createAiResumeResponse(messageDTO, messagesList, matchChat.get());
         saveMessage(matchChat.get(), aiResumeResponse);
+
         return aiResumeResponse;
 
     }
@@ -82,21 +91,28 @@ public class ChatService {
 
         Prompt matchBase = promptRepository.findByName(RESUME_PROMPT);
         String matchBaseContent = matchBase.getPrompt();
-        Optional<Prompt> matchPrompt = promptRepository.findById(messageDTO.getAssistentID());
-        Prompt assistentPrompt = matchPrompt.get();
+        Optional<Assistent> matchPrompt = assistentRepository.findById(messageDTO.getAssistentID());
 
-        matchBase.setPrompt(matchBaseContent.replace(NAME_SUBSTITUTION, assistentPrompt.getName()));
-        matchBase.setPrompt(matchBaseContent.replace(PROMPT_SUBSTITUTION, assistentPrompt.getPrompt()));
-        matchBase.setPrompt(matchBaseContent.replace(RESUME_SUBSTITUTION, matchResume.get().getDescription()));
+        if (matchPrompt.isEmpty())
+            throw new BusinessException("assistente não encontrado");
+
+        Assistent assistentPrompt = matchPrompt.get();
+
+        matchBaseContent = matchBaseContent.replace(NAME_SUBSTITUTION, assistentPrompt.getName());
+        matchBaseContent = matchBaseContent.replace(PROMPT_SUBSTITUTION, assistentPrompt.getPrompt());
+        matchBaseContent = matchBaseContent.replace(RESUME_SUBSTITUTION, matchResume.get().getDescription());
 
         Chat chat = new Chat();
         chat.setTitle(matchResume.get().getTitle());
 
         User user = userService.getUser(userDetails.getUsername());
+        Optional<Resume> resumeOptional = resumeRepository.findById(messageDTO.getResumeID());
+        Resume resume = resumeOptional.get();
         chat.setUser(user);
+        chat.setResume(resume);
         chatRepository.save(chat);
 
-        MessagesEntity systemMessage = saveMessage(chat, matchBase.getPrompt(), "system");
+        MessagesEntity systemMessage = saveMessage(chat, matchBaseContent, ROLE_SYSTEM);
         MessagesResponse messages = new MessagesResponse();
         messages.setRole(systemMessage.getOrigin());
         messages.setContent(systemMessage.getMessage());
@@ -117,6 +133,7 @@ public class ChatService {
         aiResumeRequest.setStream(false);
         AiResumeResponse aiResumeResponse = aiClient.getResumeResponse(aiResumeRequest);
         aiResumeResponse.setChatId(chat.getId());
+
         return aiResumeResponse;
     }
 
@@ -143,6 +160,27 @@ public class ChatService {
     private List<Resume> getUserResumes(UserDetails userDetails) {
         List<Resume> userResumes = resumeRepository.findAllByUserUsername(userDetails.getUsername());
         return userResumes;
+    }
+
+    public ChatResponse getAllChats(String username) {
+        ChatResponse response = new ChatResponse();
+        Comparator<MessageDto> Comparator = (messages1, messages2) -> messages1.getTime()
+                .compareTo(messages2.getTime());
+
+        List<Chat> chatList = chatRepository.findAllChatByUserUsername(username);
+
+        for (Chat chat : chatList) {
+            Integer chatId = chat.getId();
+            Integer resumeId = chat.getResume().getId();
+            List<MessagesEntity> messages = messagesRepository.findAllByChatId(chatId).stream()
+                    .filter(message -> !message.getOrigin().equals(ROLE_SYSTEM)).collect(Collectors.toList());
+            List<MessageDto> messageDto = messages.stream().map(MessageDto::fromEntity).collect(Collectors.toList());
+            TreeSet<MessageDto> messageSet = new TreeSet<>(Comparator);
+            messageSet.addAll(messageDto);
+            response.getChats().put(resumeId, messageSet);
+        }
+
+        return response;
     }
 
 }

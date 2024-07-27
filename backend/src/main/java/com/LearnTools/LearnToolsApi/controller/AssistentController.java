@@ -1,34 +1,27 @@
 package com.LearnTools.LearnToolsApi.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.LearnTools.LearnToolsApi.handler.BusinessException;
-import com.LearnTools.LearnToolsApi.model.entidades.Prompt;
-import com.LearnTools.LearnToolsApi.model.repository.PromptRepository;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.AssistentResponse;
+import com.LearnTools.LearnToolsApi.services.AssistentService;
 
 import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/assistents")
 public class AssistentController {
-    @Autowired
-    PromptRepository repository;
+    private final AssistentService assistentService;
+
+    public AssistentController(AssistentService assistentService) {
+        this.assistentService = assistentService;
+    }
 
     @GetMapping()
-    public List<Prompt> listAssistents() {
-        return repository.findAll();
+    public List<AssistentResponse> getAllAssistents() {
+        return assistentService.getAllAssistents();
     }
 
-    @GetMapping("/{name}")
-    public Prompt getAssistentByName(@PathVariable String name) {
-        Prompt prompts = repository.findByName(name);
-        if (prompts == null) {
-            throw new BusinessException("Assistente não encontrado");
-        }
-        return prompts;
-    }
 }

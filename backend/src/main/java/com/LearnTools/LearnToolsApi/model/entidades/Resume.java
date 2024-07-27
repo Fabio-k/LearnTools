@@ -2,7 +2,6 @@ package com.LearnTools.LearnToolsApi.model.entidades;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,8 +30,13 @@ public class Resume {
     @JoinColumn(name = "res_usr_id")
     private User user;
 
-    @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)
-    private List<ResumeTag> resumeTags;
+    @OneToMany(mappedBy = "resume")
+    private List<Chat> chats;
+
+    /*
+     * @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)
+     * private List<ResumeTag> resumeTags;
+     */
 
     public Resume() {
 
@@ -75,12 +79,14 @@ public class Resume {
         this.user = user;
     }
 
-    public List<ResumeTag> getResumeTags() {
-        return resumeTags;
-    }
-
-    public void setResumeTags(List<ResumeTag> resumeTags) {
-        this.resumeTags = resumeTags;
-    }
+    /*
+     * public List<ResumeTag> getResumeTags() {
+     * return resumeTags;
+     * }
+     * 
+     * public void setResumeTags(List<ResumeTag> resumeTags) {
+     * this.resumeTags = resumeTags;
+     * }
+     */
 
 }

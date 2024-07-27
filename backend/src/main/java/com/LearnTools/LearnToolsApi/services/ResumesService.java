@@ -36,13 +36,17 @@ public class ResumesService {
         this.userService = userService;
     }
 
-    public Resume createResume(ResumesRequest resumesDTO, UserDetails userDetails) {
-        Resume resume = new Resume(resumesDTO.getTitle(), resumesDTO.getResume());
+    public ResumesResponse createResume(ResumesRequest resumesDTO, UserDetails userDetails) {
+        Resume resume = new Resume(resumesDTO.getTitle(), resumesDTO.getDescription());
         User user = userService.getUser(userDetails.getUsername());
         resume.setUser(user);
         Resume resumeSaved = resumeRepository.save(resume);
-        createResumeTags(resumesDTO, userDetails, resume);
-        return resumeSaved;
+
+        ResumesResponse resumesResponse = new ResumesResponse();
+        resumesResponse.setTitle(resumeSaved.getTitle());
+        resumesResponse.setDescription(resumeSaved.getDescription());
+        resumesResponse.setId(resumeSaved.getId());
+        return resumesResponse;
 
     }
 
@@ -71,6 +75,25 @@ public class ResumesService {
     public List<ResumesResponse> getUserResumes(UserDetails userDetails) {
         List<Resume> userResumes = findUserResumes(userDetails);
         return userResumes.stream().map(ResumesResponse::fromEntity).collect(Collectors.toList());
+    }
+
+    public ResumesResponse patchResume(UserDetails userDetails, Integer resumeId, ResumesRequest resumesRequest) {
+        Optional<Resume> resumeList = resumeRepository.findById(resumeId);
+        if (resumeList.isEmpty())
+            throw new BusinessException("resume not found");
+        Resume resume = resumeList.get();
+        if (resumesRequest.getTitle() != null)
+            resume.setTitle(resumesRequest.getTitle());
+        if (resumesRequest.getDescription() != null)
+            resume.setDescription(resumesRequest.getDescription());
+
+        Resume savedResume = resumeRepository.save(resume);
+
+        ResumesResponse resumeResponse = new ResumesResponse();
+        resumeResponse.setTitle(savedResume.getTitle());
+        resumeResponse.setDescription(savedResume.getDescription());
+        resumeResponse.setId(savedResume.getId());
+        return resumeResponse;
     }
 
     private List<Resume> findUserResumes(UserDetails userDetails) {

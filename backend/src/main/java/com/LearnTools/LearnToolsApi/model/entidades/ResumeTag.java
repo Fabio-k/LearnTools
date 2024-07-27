@@ -10,19 +10,19 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "resume_tag")
+@Table(name = "resume_category")
 public class ResumeTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rst_id")
+    @Column(name = "rsc_id")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "rst_res_id")
+    @JoinColumn(name = "rsc_res_id")
     private Resume resume;
 
     @ManyToOne
-    @JoinColumn(name = "rst_tag_id")
+    @JoinColumn(name = "rsc_tag_id")
     private Tag tag;
 
     public ResumeTag() {

@@ -14,6 +14,13 @@ CREATE TABLE prompt(
     prt_prompt TEXT
 );
 
+CREATE TABLE assistent(
+    ast_id SERIAL PRIMARY KEY,
+    ast_name VARCHAR(50) NOT NULL,
+    ast_description VARCHAR(300),
+    ast_prompt TEXT NOT NULL
+);
+
 CREATE TABLE flashcard(
     fls_id SERIAL PRIMARY KEY,
     fls_que VARCHAR(100),
@@ -28,9 +35,25 @@ CREATE TABLE flashcard(
 CREATE TABLE resume(
     res_id SERIAL PRIMARY KEY,
     res_title VARCHAR(50) NOT NULL,
-    res_text VARCHAR(500) NOT NULL,
+    res_text TEXT NOT NULL,
     res_usr_id INT NOT NULL,
     FOREIGN KEY(res_usr_id) REFERENCES tab_user(usr_id)
+);
+
+CREATE TABLE category(
+    cat_id SERIAL PRIMARY KEY,
+    cat_name VARCHAR(50) NOT NULL,
+    cat_usr_id INT NOT NULL,
+    FOREIGN KEY (cat_usr_id) REFERENCES tab_user(usr_id)
+);
+
+CREATE TABLE resume_category(
+    rsc_id SERIAL PRIMARY KEY,
+    rsc_name VARCHAR(50) NOT NULL,
+    rsc_res_id INT NOT NULL,
+    rsc_usr_id INT NOT NULL,
+    FOREIGN KEY(rsc_res_id) REFERENCES resume(res_id),
+    FOREIGN KEY(rsc_usr_id) REFERENCES tab_user(usr_id)
 );
 
 CREATE TABLE tag(
@@ -45,6 +68,8 @@ CREATE TABLE chat(
     cht_id SERIAL PRIMARY KEY,
     cht_title VARCHAR(30) NOT NULL,
     cht_usr_id INT NOT NULL,
+    cht_res_id INT NOT NULL,
+    FOREIGN KEY(cht_res_id) REFERENCES resume(res_id),
     FOREIGN KEY(cht_usr_id) REFERENCES tab_user(usr_id)
 );
 
@@ -73,6 +98,11 @@ CREATE TABLE messages(
     FOREIGN KEY(msg_cht_id) REFERENCES chat(cht_id)
 );
 
+CREATE TABLE revision_dificulty(
+    rvd_id SERIAL PRIMARY KEY,
+    rvd_name VARCHAR(20)
+);
+
 CREATE TABLE flashcard_Revision(
     flr_id SERIAL PRIMARY KEY,
     flr_min_time TIMESTAMP,
@@ -82,7 +112,3 @@ CREATE TABLE flashcard_Revision(
     FOREIGN KEY(flr_rvd_id) REFERENCES revision_dificulty(rvd_id)
 );
 
-CREATE TABLE revision_dificult(
-    rvd_id SERIAL PRIMARY KEY,
-    rvd_name VARCHAR(20)
-);

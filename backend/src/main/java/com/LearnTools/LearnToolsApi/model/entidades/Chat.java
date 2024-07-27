@@ -27,6 +27,10 @@ public class Chat {
     @JoinColumn(name = "cht_usr_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "cht_res_id")
+    private Resume resume;
+
     @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
     private List<MessagesEntity> messages = new ArrayList<>();
 
@@ -65,6 +69,14 @@ public class Chat {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Resume getResume() {
+        return resume;
+    }
+
+    public void setResume(Resume resume) {
+        this.resume = resume;
     }
 
 }

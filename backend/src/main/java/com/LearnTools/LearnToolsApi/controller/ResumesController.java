@@ -16,11 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.LearnTools.LearnToolsApi.model.entidades.Resume;
 import com.LearnTools.LearnToolsApi.services.ResumesService;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
@@ -32,6 +33,7 @@ public class ResumesController {
         this.resumesService = resumesService;
     }
 
+    @CrossOrigin
     @GetMapping()
     public ResponseEntity<List<ResumesResponse>> getMethodName(@AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(required = false) Integer id) {
@@ -48,12 +50,20 @@ public class ResumesController {
         return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin
     @PostMapping()
     @Transactional
-    public ResponseEntity<Resume> postResume(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<ResumesResponse> postResume(@AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ResumesRequest resumesDTO) {
 
         return ResponseEntity.ok(resumesService.createResume(resumesDTO, userDetails));
+    }
+
+    @CrossOrigin(origins = "*")
+    @PatchMapping("/{resumeId}")
+    public ResponseEntity<ResumesResponse> patchResume(@AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody ResumesRequest resumesDTO, @PathVariable Integer resumeId) {
+        return ResponseEntity.ok(resumesService.patchResume(userDetails, resumeId, resumesDTO));
     }
 
 }
