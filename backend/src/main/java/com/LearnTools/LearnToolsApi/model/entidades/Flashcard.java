@@ -31,7 +31,7 @@ public class Flashcard {
     private String answer;
 
     @Column(name = "fls_priority")
-    private Integer priority;
+    private Integer priority = 0;
 
     @Column(name = "fls_revision_date")
     private Date revision_date;
@@ -42,6 +42,9 @@ public class Flashcard {
     @ManyToOne
     @JoinColumn(name = "fls_usr_id")
     private User user;
+
+    @OneToMany(mappedBy = "flashcard")
+    private List<Revision> revisions;
 
     public Flashcard() {
 
@@ -90,6 +93,38 @@ public class Flashcard {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public Date getRevision_date() {
+        return revision_date;
+    }
+
+    public void setRevision_date(Date revision_date) {
+        this.revision_date = revision_date;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public List<Revision> getRevisions() {
+        return revisions;
+    }
+
+    public void setRevisions(List<Revision> revisions) {
+        this.revisions = revisions;
     }
 
 }

@@ -46,6 +46,5 @@ public class FlashcardController {
     @DeleteMapping("/{flashcardid}")
     public void deleteFlashcard(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String flashcardid) {
         flashcardService.deleteFlashcard(userDetails.getUsername(), Integer.parseInt(flashcardid));
-        ;
     }
 }

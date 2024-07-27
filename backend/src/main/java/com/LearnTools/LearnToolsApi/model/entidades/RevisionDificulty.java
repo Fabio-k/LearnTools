@@ -18,6 +18,9 @@ public class RevisionDificulty {
     @Column(name = "rvd_id")
     private Integer id;
 
+    @Column(name = "rvd_name")
+    private String name;
+
     @OneToMany(mappedBy = "revisionDificulty")
     private List<Revision> revisions;
 }
