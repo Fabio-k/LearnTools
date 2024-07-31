@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import com.LearnTools.LearnToolsApi.controller.dto.Request.GithubAcessTokenRequest;
-import com.LearnTools.LearnToolsApi.controller.dto.Response.GithubTokenResponse;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.GithubAcessTokenRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.GithubTokenResponse;
 
 @FeignClient(name = "githubWebClient", url = "https://github.com/login/oauth")
 public interface GithubWebClient {

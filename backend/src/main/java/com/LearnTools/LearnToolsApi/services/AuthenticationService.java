@@ -13,12 +13,12 @@ import com.LearnTools.LearnToolsApi.model.entidades.User;
 import com.LearnTools.LearnToolsApi.model.repository.UserRepository;
 import com.LearnTools.LearnToolsApi.client.GithubApiClient;
 import com.LearnTools.LearnToolsApi.client.GithubWebClient;
-import com.LearnTools.LearnToolsApi.controller.dto.Request.GithubAcessTokenRequest;
-import com.LearnTools.LearnToolsApi.controller.dto.Request.GithubSignInRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.GithubAcessTokenRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.GithubSignInRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.GithubTokenResponse;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.GithubUserResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.SignInRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.SignUpRequest;
-import com.LearnTools.LearnToolsApi.controller.dto.Response.GithubTokenResponse;
-import com.LearnTools.LearnToolsApi.controller.dto.Response.GithubUserResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.JwtAuthenticationResponse;
 import com.LearnTools.LearnToolsApi.handler.BusinessException;
 

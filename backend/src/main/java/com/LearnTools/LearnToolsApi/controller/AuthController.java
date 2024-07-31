@@ -2,7 +2,7 @@ package com.LearnTools.LearnToolsApi.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.LearnTools.LearnToolsApi.controller.dto.Request.GithubSignInRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.GithubSignInRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.SignInRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.SignUpRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.JwtAuthenticationResponse;

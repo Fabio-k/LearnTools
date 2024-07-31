@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 
 import com.LearnTools.LearnToolsApi.model.entidades.MessagesEntity;
 
-public class MessageDto {
+public class MessageDto extends Message {
     private String message;
-    private String role;
     private LocalDateTime time;
 
     public String getMessage() {
@@ -15,14 +14,6 @@ public class MessageDto {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public LocalDateTime getTime() {

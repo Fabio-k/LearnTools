@@ -1,12 +1,12 @@
-package com.LearnTools.LearnToolsApi.controller.dto.Request;
+package com.LearnTools.LearnToolsApi.controller.dto.Client;
 
 import java.util.List;
 
-import com.LearnTools.LearnToolsApi.controller.dto.Response.MessagesResponse;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.SimpleMessage;
 
 public class AiResumeRequest {
     private String model;
-    private List<MessagesResponse> messages;
+    private List<SimpleMessage> messages;
     private Boolean stream;
 
     public String getModel() {
@@ -17,11 +17,11 @@ public class AiResumeRequest {
         this.model = model;
     }
 
-    public List<MessagesResponse> getMessages() {
+    public List<SimpleMessage> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<MessagesResponse> messages) {
+    public void setMessages(List<SimpleMessage> messages) {
         this.messages = messages;
     }
 

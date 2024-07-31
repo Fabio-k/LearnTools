@@ -1,4 +1,4 @@
-package com.LearnTools.LearnToolsApi.controller.dto.Request;
+package com.LearnTools.LearnToolsApi.controller.dto.Client;
 
 public class GithubAcessTokenRequest {
     private String code;

@@ -1,18 +1,10 @@
 package com.LearnTools.LearnToolsApi.controller.dto.Response;
 
+import com.LearnTools.LearnToolsApi.controller.dto.Message;
 import com.LearnTools.LearnToolsApi.model.entidades.MessagesEntity;
 
-public class MessagesResponse {
-    private String role;
+public class SimpleMessage extends Message {
     private String content;
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public String getContent() {
         return content;
@@ -22,8 +14,8 @@ public class MessagesResponse {
         this.content = content;
     }
 
-    public static MessagesResponse fromEntity(MessagesEntity messagesEntity) {
-        MessagesResponse messages = new MessagesResponse();
+    public static SimpleMessage fromEntity(MessagesEntity messagesEntity) {
+        SimpleMessage messages = new SimpleMessage();
         messages.setRole(messagesEntity.getOrigin());
         messages.setContent(messagesEntity.getMessage());
         return messages;

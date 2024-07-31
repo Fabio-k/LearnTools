@@ -1,4 +1,4 @@
-package com.LearnTools.LearnToolsApi.controller.dto.Response;
+package com.LearnTools.LearnToolsApi.controller.dto.Client;
 
 public class GithubUserResponse {
     private String login;

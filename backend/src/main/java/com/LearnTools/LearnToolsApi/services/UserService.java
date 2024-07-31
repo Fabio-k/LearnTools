@@ -26,6 +26,13 @@ public class UserService {
         return user.get();
     }
 
+    public String getUsername(String username) {
+        if (username.startsWith("github_")) {
+            return getUser(username).getGithubUsername();
+        }
+        return username;
+    }
+
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override

@@ -1,4 +1,4 @@
-package com.LearnTools.LearnToolsApi.controller.dto.Request;
+package com.LearnTools.LearnToolsApi.controller.dto.Client;
 
 public class GithubSignInRequest {
     private String code;
@@ -19,7 +19,5 @@ public class GithubSignInRequest {
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
-
-    
 
 }
