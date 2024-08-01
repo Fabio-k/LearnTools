@@ -5,8 +5,8 @@ import Home from "../views/Home";
 import Flashcards from "../views/Flashcards";
 import { LayoutProvider } from "../components/LayoutContext";
 import AuthPage from "../views/AuthPage";
-import PrivateRoute from "../components/PrivateRoute";
 import Github from "../views/Github";
+import { UserProvider } from "../interfaces/hooks/useUser";
 
 function Layout() {
   return (
@@ -20,14 +20,17 @@ export default function Rotas() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<AuthPage />} />
-        <Route element={<Layout />}>
-          <Route path="/home" element={<PrivateRoute element={<Home />} />} />
-
-          <Route path="/ia" element={<AiChat />} />
+        <Route element={<UserProvider />}>
+          <Route path="/login" element={<AuthPage />} />
           <Route path="/resumes" element={<Resumes />} />
-          <Route path="/flashcards" element={<Flashcards />} />
-          <Route path="/github" element={<Github />} />
+
+          <Route element={<Layout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/flashcards" element={<Flashcards />} />
+            <Route path="/ia" element={<AiChat />} />
+
+            <Route path="/github" element={<Github />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
