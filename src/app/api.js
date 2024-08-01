@@ -1,13 +1,19 @@
 export const server = "http://localhost:8080";
 
-export const aiModel = {
-  openHermes: "llama3",
+export const methods = {
+  post: "POST",
+  patch: "PATCH",
+  get: "GET",
+  delete: "DELETE",
 };
+
 export const routes = {
-  assistent: `${server}/assistents/{id}/ask`,
+  assistent: `${server}/assistents`,
   resumes: `${server}/resumes`,
   login: `${server}/signin`,
   github: `${server}/github`,
+  analitics: `${server}/analitics`,
+  chat: `${server}/chat`,
 };
 
 class Api {
@@ -23,6 +29,17 @@ class Api {
     if (token) {
       this.headers["Authorization"] = `Bearer ${token}`;
     }
+  }
+
+  async request(method, body, param = "") {
+    const request = {
+      headers: this.headers,
+      method: method,
+      body: JSON.stringify(body),
+    };
+    console.log(request.body);
+    const response = await fetch(this.baseUrl + param, request);
+    return response;
   }
 
   async post(objeto) {
@@ -58,6 +75,7 @@ class Api {
     try {
       response = await fetch(this.baseUrl, {
         method: "DELETE",
+        headers: this.headers,
       });
     } catch (err) {
       console.log(err);
@@ -70,6 +88,7 @@ class Api {
     try {
       response = await fetch(this.baseUrl, {
         method: "PATCH",
+        headers: this.headers,
         body: JSON.stringify(body),
       });
     } catch (err) {

@@ -11,7 +11,6 @@ export default class Assistent extends Api {
     this.baseUrl = route;
 
     const body = {
-      model: aiModel.openHermes,
       messages: messages,
     };
 
