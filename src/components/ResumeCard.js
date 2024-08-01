@@ -1,92 +1,42 @@
-import React from "react";
-import { useState } from "react";
-import resumesService from "../app/services/resumeService";
-
-const DeleteFormContent = ({
-  resumes,
-  setResumes,
-  resumesObject,
-  toggleModal,
-  resumeApi,
-}) => {
-  const handleDeleteResume = async () => {
-    const response = await resumeApi.deleteResume(resumesObject.id);
-    if (response.ok) {
-      setResumes(resumes.filter((resume) => resume.id !== resumesObject.id));
-      toggleModal();
-    }
-  };
-
-  return <></>;
-};
-
-const EditResumeForm = ({
-  resumes,
-  setResumes,
-  resumesObject,
-  resumeApi,
-  toggleModal,
-}) => {
-  const [resumeObj, setResumeObj] = useState(resumesObject);
-
-  const handleSubmitEdit = async () => {
-    const resumeObjectEdited = {
-      title: document.getElementById("resumeTitle").value,
-      description: document.getElementById("resumeDescription").value,
-    };
-    const response = await resumeApi.editResume(
-      resumesObject.id,
-      resumeObjectEdited
-    );
-    if (response.ok) {
-      setResumes(
-        resumes.map((resume) => {
-          if (resume.id == resumeObj.id) {
-            return { ...resume, ...resumeObjectEdited };
-          }
-          return resume;
-        })
-      );
-      toggleModal();
-    }
-  };
-
-  return <></>;
-};
+import React, { useState } from "react";
+import menu from "../Assets/ui/menu.svg";
+import style from "../resumeCard.module.css";
 
 const ResumeCard = ({
-  resumes,
-  setResumes,
-  resumesObject,
-  handleModalContent,
-  toggleModal,
+  resumeData,
+  selectedResumeId,
+  onItemClick,
+  resumeSummary,
+  handleContextMenu,
+  handleButtonContextMenu,
 }) => {
-  const resumeApi = new resumesService();
-  return (
-    <li
-      key={resumesObject.id}
-      style={{
-        border: "1px solid black",
-        padding: "10px",
-        borderRadius: "10px",
-        maxWidth: "70%",
-        marginBottom: "50px",
-      }}
-    >
-      <section style={{ display: "flex", justifyContent: "space-between" }}>
-        <h1>{resumesObject.title}</h1>
-        <div
-          style={{
-            display: "flex",
-            width: "40%",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-          }}
-        ></div>
-      </section>
+  const classes = `${style.resume} ${
+    resumeData.id == selectedResumeId ? style.resumeSelected : ""
+  }`;
 
-      <p>{resumesObject.description}</p>
-    </li>
+  return (
+    <>
+      <li
+        className={classes}
+        onClick={onItemClick}
+        onContextMenu={(e) => handleContextMenu(e, resumeData)}
+      >
+        <section>
+          <h1 style={{ margin: 0, fontSize: "20px", fontFamily: "sans-serif" }}>
+            {resumeData.title}
+          </h1>
+          <p style={{ margin: 0, marginTop: "5px", color: "#595959" }}>
+            {resumeSummary}
+          </p>
+        </section>
+        <img
+          src={menu}
+          alt="menu do item"
+          className={`${style.menuImage} contextMenuButton`}
+          onClick={(e) => handleButtonContextMenu(e, resumeData)}
+        />
+      </li>
+    </>
   );
 };
 

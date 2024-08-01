@@ -1,9 +1,32 @@
-html,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 body {
   margin: 0;
   padding: 0;
-  min-height: 100%;
-  background-color: #ebebeb;
+  min-height: 100vh;
+  background-color: var(--bg);
+  overflow-x: hidden;
+  font-family: monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --bg: #ebebeb;
+  --baseBg: white;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .button {
