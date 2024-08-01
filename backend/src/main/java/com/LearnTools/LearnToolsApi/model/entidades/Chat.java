@@ -3,6 +3,8 @@ package com.LearnTools.LearnToolsApi.model.entidades;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Cascade;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,8 +22,8 @@ public class Chat {
     @Column(name = "cht_id")
     private Integer id;
 
-    @Column(name = "cht_title")
-    private String title;
+    @Column(length = 30, name = "cht_assistent_name")
+    private String assistentName;
 
     @ManyToOne
     @JoinColumn(name = "cht_usr_id")
@@ -38,17 +40,12 @@ public class Chat {
 
     }
 
-    public Chat(String title, User user) {
-        this.title = title;
+    public Chat(User user) {
         this.user = user;
     }
 
     public Integer getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public User getUser() {
@@ -63,10 +60,6 @@ public class Chat {
         this.messages = messages;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public void setUser(User user) {
         this.user = user;
     }
@@ -77,6 +70,14 @@ public class Chat {
 
     public void setResume(Resume resume) {
         this.resume = resume;
+    }
+
+    public String getAssistentName() {
+        return assistentName;
+    }
+
+    public void setAssistentName(String assistentName) {
+        this.assistentName = assistentName;
     }
 
 }

@@ -3,7 +3,6 @@ package com.LearnTools.LearnToolsApi.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.client.AiClient;
-import com.LearnTools.LearnToolsApi.controller.dto.Response.AiTagResponse;
 import com.LearnTools.LearnToolsApi.model.entidades.Flashcard;
 import com.LearnTools.LearnToolsApi.model.entidades.User;
 import com.LearnTools.LearnToolsApi.model.repository.FlashcardRepository;
@@ -22,13 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController {
     private final UserRepository userRepository;
     private final FlashcardRepository flashcardRepository;
-    private final AiClient aiClient;
 
-    public AdminController(UserRepository userRepository, FlashcardRepository flashcardRepository,
-            AiClient aiClient) {
+    public AdminController(UserRepository userRepository, FlashcardRepository flashcardRepository) {
         this.userRepository = userRepository;
         this.flashcardRepository = flashcardRepository;
-        this.aiClient = aiClient;
     }
 
     @Transactional
@@ -46,10 +42,4 @@ public class AdminController {
     public List<Flashcard> getAllFlashcards() {
         return flashcardRepository.findAll();
     }
-
-    @GetMapping("/ai")
-    public AiTagResponse getAllAiTags() {
-        return aiClient.getTags();
-    }
-
 }

@@ -1,7 +1,10 @@
 package com.LearnTools.LearnToolsApi.controller.dto.Response;
 
+import java.time.LocalDateTime;
+
 public class JwtAuthenticationResponse {
     private String token;
+    private LocalDateTime expirationDate;
 
     public JwtAuthenticationResponse() {
     }

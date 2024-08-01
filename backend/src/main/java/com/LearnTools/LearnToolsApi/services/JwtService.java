@@ -1,6 +1,7 @@
 package com.LearnTools.LearnToolsApi.services;
 
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,12 @@ public class JwtService {
     @Value("${token.siging.key}")
     private String jwSingingKey;
 
+    private final UserService userService;
+
+    public JwtService(UserService userService) {
+        this.userService = userService;
+    }
+
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -42,6 +49,13 @@ public class JwtService {
         return (username.equals(authenticateUser)) && !isTokenExpired(token);
     }
 
+    public boolean isTokenValid(String token) {
+        final String username = extractUserName(token);
+        User user = (User) userService.userDetailsService().loadUserByUsername(username);
+        String authenticateUser = user.getUsername();
+        return (username.equals(authenticateUser)) && !isTokenExpired(token);
+    }
+
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
@@ -49,13 +63,14 @@ public class JwtService {
 
     private String generateToken(Map<String, Object> extraClaims, User user) {
         String username = user.getUsername();
+        LocalDateTime date = LocalDateTime.now().plusDays(1);
         return Jwts.builder().setClaims(extraClaims).setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSiginingKey(), SignatureAlgorithm.HS256).compact();
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

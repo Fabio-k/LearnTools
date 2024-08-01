@@ -4,19 +4,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.client.AiClient;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.MessageRequest;
-import com.LearnTools.LearnToolsApi.controller.dto.Response.AiResumeResponse;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.AiResumeResponse;
+import com.LearnTools.LearnToolsApi.controller.dto.Request.ChatRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.AiTagResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.ChatResponse;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.ChatStatusResponse;
 import com.LearnTools.LearnToolsApi.services.ChatService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/chat")
@@ -29,24 +32,34 @@ public class ChatController {
         this.aiClient = aiClient;
     }
 
-    @GetMapping()
-    public ResponseEntity<ChatResponse> getChats(@AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(chatService.getAllChats(userDetails.getUsername()));
+    @PostMapping("status/{resumeId}")
+    public ResponseEntity<ChatStatusResponse> getStatus(@AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Integer resumeId) {
+        return ResponseEntity.ok(chatService.getStatus(userDetails.getUsername(), resumeId));
     }
 
     @PostMapping()
-    public AiResumeResponse postChat(@AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody MessageRequest messageDTO,
-            @RequestParam(required = false) Integer id) {
-
-        if (id != null) {
-            return chatService.handleAiChatReponse(userDetails, messageDTO, id);
-        } else {
-            return chatService.handleNewChat(userDetails, messageDTO);
-        }
+    public ResponseEntity<ChatResponse> getChats(@AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody ChatRequest request) {
+        return ResponseEntity.ok(chatService.getOrCreateChat(userDetails.getUsername(), request));
     }
 
-    @GetMapping("/ai")
+    @PostMapping("/{id}")
+    public AiResumeResponse postChat(@AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody MessageRequest messageDTO,
+            @PathVariable Integer id) {
+
+        return chatService.handleAiChatReponse(userDetails, messageDTO, id);
+    }
+
+    @DeleteMapping("/{chatId}")
+    public ResponseEntity<String> deleteChat(@AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Integer chatId) {
+        chatService.deleteChat(userDetails.getUsername(), chatId);
+        return ResponseEntity.ok("deleted sucessfully");
+    }
+
+    @GetMapping("/tags")
     public AiTagResponse getAllAiTags() {
         return aiClient.getTags();
     }
