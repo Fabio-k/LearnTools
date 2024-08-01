@@ -64,9 +64,9 @@ public class ChatService {
         this.aiClient = aiClient;
     }
 
-    public ChatStatusResponse getStatus(String username, Integer chatId) {
+    public ChatStatusResponse getStatus(String username, Integer resumeId) {
         ChatStatusResponse response = new ChatStatusResponse();
-        Optional<Chat> oprionalChat = findUserChat(username, chatId);
+        Optional<Chat> oprionalChat = findUserChatByResumeId(username, resumeId);
         response.setIsCreated(oprionalChat.isPresent());
         return response;
     }
@@ -88,7 +88,7 @@ public class ChatService {
     }
 
     public AiResumeResponse handleAiChatReponse(UserDetails userDetails, MessageRequest request, Integer id) {
-        Optional<Chat> matchChat = findUserChat(userDetails.getUsername(), id);
+        Optional<Chat> matchChat = findUserChatByChatId(userDetails.getUsername(), id);
         if (matchChat.isEmpty())
             throw new BusinessException("chat not found");
 
@@ -142,7 +142,7 @@ public class ChatService {
     }
 
     public void deleteChat(String username, Integer chatId) {
-        Optional<Chat> chat = findUserChat(username, chatId);
+        Optional<Chat> chat = findUserChatByChatId(username, chatId);
 
         if (chat.isEmpty())
             throw new BusinessException("chat not found");
@@ -198,10 +198,17 @@ public class ChatService {
         return newMessage;
     }
 
-    private Optional<Chat> findUserChat(String username, Integer chatId) {
+    private Optional<Chat> findUserChatByChatId(String username, Integer chatId) {
         List<Chat> userChats = chatRepository.findAllChatByUserUsername(username);
         Optional<Chat> optionalChat = userChats.stream()
-                .filter(c -> c.getResume().getId() == chatId).findFirst();
+                .filter(c -> c.getId() == chatId).findFirst();
+        return optionalChat;
+    }
+
+    private Optional<Chat> findUserChatByResumeId(String username, Integer resumeId) {
+        List<Chat> userChats = chatRepository.findAllChatByUserUsername(username);
+        Optional<Chat> optionalChat = userChats.stream()
+                .filter(c -> c.getResume().getId() == resumeId).findFirst();
         return optionalChat;
     }
 

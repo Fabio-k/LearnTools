@@ -1,8 +1,6 @@
 package com.LearnTools.LearnToolsApi.controller;
 
 import org.springframework.web.bind.annotation.RestController;
-
-import com.LearnTools.LearnToolsApi.client.AiClient;
 import com.LearnTools.LearnToolsApi.model.entidades.Flashcard;
 import com.LearnTools.LearnToolsApi.model.entidades.User;
 import com.LearnTools.LearnToolsApi.model.repository.FlashcardRepository;
