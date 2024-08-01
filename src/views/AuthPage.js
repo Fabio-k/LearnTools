@@ -1,10 +1,11 @@
-import logo from "../logo.svg";
-import githubLogo from "../github-mark-white.svg";
+import logo from "../Assets/ui/logo.svg";
+import githubLogo from "../Assets/github-mark-white.svg";
 import styles from "../auth.module.css";
 import { useEffect, useState } from "react";
 import Auth from "../app/services/Auth";
 import { useNavigate } from "react-router-dom";
 import queryString from "query-string";
+import useUser from "../interfaces/hooks/useUser";
 
 const AuthPage = () => {
   const [name, setName] = useState("");
@@ -12,6 +13,7 @@ const AuthPage = () => {
   const [loginError, setLoginError] = useState(false);
   const navigate = useNavigate();
 
+  const { fetchUser } = useUser();
   const clientId = "Ov23liEDnGP9988VvztQ";
 
   useEffect(() => {
@@ -25,8 +27,9 @@ const AuthPage = () => {
         };
         try {
           const response = await authService.sendGithubCode(request);
-          if (response != undefined) {
+          if (response) {
             localStorage.setItem("token", response["token"]);
+            await fetchUser();
             navigate("/home", { userInformation: { response } });
           }
         } catch (e) {
@@ -42,11 +45,11 @@ const AuthPage = () => {
     const authService = new Auth();
     try {
       const response = await authService.getUserInformation(name, password);
-      if (response != undefined) {
+      if (response) {
         localStorage.setItem("token", response["token"]);
+        await fetchUser();
         navigate("/home", { userInformation: { response } });
       }
-      console.log(response["token"]);
     } catch (e) {
       console.log("error no post" + e);
       setLoginError(true);
