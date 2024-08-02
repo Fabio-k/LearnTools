@@ -18,7 +18,6 @@ import com.LearnTools.LearnToolsApi.controller.dto.Client.AiResumeResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.ChatRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.MessageRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.ChatResponse;
-import com.LearnTools.LearnToolsApi.controller.dto.Response.ChatStatusResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.SimpleMessage;
 import com.LearnTools.LearnToolsApi.handler.BusinessException;
 import com.LearnTools.LearnToolsApi.model.entidades.Assistent;
@@ -64,23 +63,20 @@ public class ChatService {
         this.aiClient = aiClient;
     }
 
-    public ChatStatusResponse getStatus(String username, Integer resumeId) {
-        ChatStatusResponse response = new ChatStatusResponse();
-        Optional<Chat> oprionalChat = findUserChatByResumeId(username, resumeId);
-        response.setIsCreated(oprionalChat.isPresent());
-        return response;
-    }
-
     public ChatResponse getOrCreateChat(String username, ChatRequest request) {
-        if (request.getResumeId() == null) {
-            Chat chat = handleNewChat(username, request);
-            return formatChatToChatResponse(chat, true);
-        }
-
+        if (request.getResumeId() == null)
+            throw new BusinessException("resumeId cant be null");
+        if (username == null)
+            throw new BusinessException("username cant be null");
         Optional<Chat> optionalChat = chatRepository.findAllChatByUserUsername(username).stream()
                 .filter(c -> c.getResume().getId() == request.getResumeId()).findFirst();
 
         if (optionalChat.isEmpty()) {
+            if (request.getAssistentId() == null || request.getModel() == null) {
+                ChatResponse response = new ChatResponse();
+                response.setIsNewChat(true);
+                return response;
+            }
             Chat chat = handleNewChat(username, request);
             return formatChatToChatResponse(chat, true);
         }
@@ -202,13 +198,6 @@ public class ChatService {
         List<Chat> userChats = chatRepository.findAllChatByUserUsername(username);
         Optional<Chat> optionalChat = userChats.stream()
                 .filter(c -> c.getId() == chatId).findFirst();
-        return optionalChat;
-    }
-
-    private Optional<Chat> findUserChatByResumeId(String username, Integer resumeId) {
-        List<Chat> userChats = chatRepository.findAllChatByUserUsername(username);
-        Optional<Chat> optionalChat = userChats.stream()
-                .filter(c -> c.getResume().getId() == resumeId).findFirst();
         return optionalChat;
     }
 

@@ -80,4 +80,8 @@ public class Chat {
         this.assistentName = assistentName;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 }

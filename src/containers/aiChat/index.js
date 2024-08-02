@@ -41,7 +41,6 @@ const AiChat = (props) => {
     );
     setChat(chatResponse);
     setisChatLoading(false);
-    console.log(chatResponse);
   };
 
   const handleSendMessage = async () => {
@@ -59,7 +58,7 @@ const AiChat = (props) => {
   };
 
   const handleDeleteChat = async () => {
-    if (chatService.deleteChat(chat.chatId)) {
+    if (await chatService.deleteChat(chat.chatId)) {
       setIsModalOpen(true);
       setChat({});
     }
@@ -88,8 +87,6 @@ const AiChat = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const chatResponse = await chatService.getStatus(props.resumeId);
-
       const response = await assistentService.getAssistents();
       setAssistentName(response[0].name);
       setAssistentId(response[0].id);
@@ -98,11 +95,14 @@ const AiChat = (props) => {
       const aiTagResponse = await chatService.getTags();
       setAiTag(aiTagResponse.models);
       setCurrentAiTag(aiTagResponse.models[0].name);
+
+      const chatResponse = await chatService.getNewChat(props.resumeId);
       console.log(chatResponse);
-      if (!chatResponse.isCreated) {
+      if (chatResponse.isNewChat) {
         setIsModalOpen(true);
       } else {
-        await handleCreateNewChat();
+        setChat(chatResponse);
+        setisChatLoading(false);
       }
       setIsLoading(false);
     };

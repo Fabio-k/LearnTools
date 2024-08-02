@@ -8,7 +8,6 @@ import com.LearnTools.LearnToolsApi.controller.dto.Client.AiResumeResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.ChatRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.AiTagResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.ChatResponse;
-import com.LearnTools.LearnToolsApi.controller.dto.Response.ChatStatusResponse;
 import com.LearnTools.LearnToolsApi.services.ChatService;
 
 import org.springframework.http.ResponseEntity;
@@ -30,12 +29,6 @@ public class ChatController {
     public ChatController(ChatService chatService, AiClient aiClient) {
         this.chatService = chatService;
         this.aiClient = aiClient;
-    }
-
-    @PostMapping("status/{resumeId}")
-    public ResponseEntity<ChatStatusResponse> getStatus(@AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Integer resumeId) {
-        return ResponseEntity.ok(chatService.getStatus(userDetails.getUsername(), resumeId));
     }
 
     @PostMapping()

@@ -43,6 +43,12 @@ public class MessagesEntity {
         this.timestamp = timestamp;
     }
 
+    public MessagesEntity(LocalDateTime time, String role, String message) {
+        this.timestamp = time;
+        this.origin = role;
+        this.message = message;
+    }
+
     public Chat getChat() {
         return chat;
     }

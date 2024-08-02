@@ -7,16 +7,6 @@ export default class ChatService extends Api {
     this.baseUrl = routes.chat;
   }
 
-  async getStatus(resumeId) {
-    const response = await this.request(
-      methods.post,
-      null,
-      `/status/${resumeId}`
-    );
-    if (response.status == 200) return await response.json();
-    this.baseUrl = routes.chat;
-  }
-
   async getNewChat(resumeId, assistentId, model) {
     const body = {
       resumeId: resumeId,
