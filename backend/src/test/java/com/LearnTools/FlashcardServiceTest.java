@@ -60,7 +60,6 @@ public class FlashcardServiceTest {
 
     @Test
     public void testGetFlashcards() {
-        // Arrange
         String username = "testuser";
         User user = new User(username, username, "teste", "USER");
         List<Flashcard> flashcards = new ArrayList<>();
@@ -76,10 +75,8 @@ public class FlashcardServiceTest {
 
         when(flashcardRepository.findAllByUserUsername(username)).thenReturn(flashcards);
 
-        // Act
         List<FlashcardResponse> flashcardResponses = flashcardService.getFlashcards(username);
 
-        // Assert
         assertEquals(2, flashcardResponses.size());
         assertEquals("Question 1", flashcardResponses.get(0).getQuestion());
         assertEquals("Answer 1", flashcardResponses.get(0).getAnswer());
@@ -89,7 +86,6 @@ public class FlashcardServiceTest {
 
     @Test
     public void testPostFlashcard() {
-        // Arrange
         String username = "testuser";
         FlashcardRequest flashcardRequest = new FlashcardRequest("Question", "Answer", List.of("Tag1", "Tag2"));
         User user = new User();
@@ -102,16 +98,12 @@ public class FlashcardServiceTest {
         when(userService.getUser(username)).thenReturn(user);
         when(flashcardRepository.save(any(Flashcard.class))).thenReturn(new Flashcard());
         when(tagService.getUserTags(username)).thenReturn(tags);
-        // Act
         flashcardService.postFlashcard(flashcardRequest, username);
 
-        // Assert
-        // No exceptions are thrown
     }
 
     @Test
     public void testPostFlashcard_InvalidTag() {
-        // Arrange
         String username = "testuser";
         FlashcardRequest flashcardRequest = new FlashcardRequest("Question", "Answer", List.of("Tag1", "Tag2"));
         User user = new User();
@@ -119,7 +111,6 @@ public class FlashcardServiceTest {
         when(userService.getUser(username)).thenReturn(user);
         when(tagService.getUserTags(username)).thenReturn(new ArrayList<>());
 
-        // Act & Assert
         assertThrows(BusinessException.class, () -> flashcardService.postFlashcard(flashcardRequest, username));
     }
 }

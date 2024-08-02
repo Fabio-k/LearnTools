@@ -37,7 +37,7 @@ public class ResumesController {
     @GetMapping()
     public ResponseEntity<List<ResumesResponse>> getMethodName(@AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(required = false) Integer id) {
-        List<ResumesResponse> userResumesFormatted = resumesService.getUserResumes(userDetails);
+        List<ResumesResponse> userResumesFormatted = resumesService.getUserResumes(userDetails.getUsername());
         return ResponseEntity.ok(userResumesFormatted);
     }
 
@@ -45,7 +45,7 @@ public class ResumesController {
     @Transactional
     public ResponseEntity<?> deleteResume(@AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Integer resumeID) {
-        resumesService.deleteResume(userDetails, resumeID);
+        resumesService.deleteResume(userDetails.getUsername(), resumeID);
 
         return ResponseEntity.ok().build();
     }
@@ -56,14 +56,14 @@ public class ResumesController {
     public ResponseEntity<ResumesResponse> postResume(@AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ResumesRequest resumesDTO) {
 
-        return ResponseEntity.ok(resumesService.createResume(resumesDTO, userDetails));
+        return ResponseEntity.ok(resumesService.createResume(resumesDTO, userDetails.getUsername()));
     }
 
     @CrossOrigin(origins = "*")
     @PatchMapping("/{resumeId}")
     public ResponseEntity<ResumesResponse> patchResume(@AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ResumesRequest resumesDTO, @PathVariable Integer resumeId) {
-        return ResponseEntity.ok(resumesService.patchResume(userDetails, resumeId, resumesDTO));
+        return ResponseEntity.ok(resumesService.patchResume(userDetails.getUsername(), resumeId, resumesDTO));
     }
 
 }

@@ -36,9 +36,9 @@ public class ResumesService {
         this.userService = userService;
     }
 
-    public ResumesResponse createResume(ResumesRequest resumesDTO, UserDetails userDetails) {
+    public ResumesResponse createResume(ResumesRequest resumesDTO, String username) {
         Resume resume = new Resume(resumesDTO.getTitle(), resumesDTO.getDescription());
-        User user = userService.getUser(userDetails.getUsername());
+        User user = userService.getUser(username);
         resume.setUser(user);
         Resume resumeSaved = resumeRepository.save(resume);
 
@@ -64,24 +64,29 @@ public class ResumesService {
         }
     }
 
-    public void deleteResume(UserDetails userDetails, Integer resumeID) {
-        List<Resume> userResumes = findUserResumes(userDetails);
+    public void deleteResume(String username, Integer resumeID) {
+        if (username == null)
+            throw new BusinessException("username cannot be null");
+        if (resumeID == null)
+            throw new BusinessException("resumeId cannot be null");
+        List<Resume> userResumes = findUserResumes(username);
         Optional<Resume> matchResume = userResumes.stream().filter(r -> r.getId() == resumeID).findFirst();
         if (matchResume.isEmpty())
             throw new BusinessException("resume not found");
         resumeRepository.delete(matchResume.get());
     }
 
-    public List<ResumesResponse> getUserResumes(UserDetails userDetails) {
-        List<Resume> userResumes = findUserResumes(userDetails);
+    public List<ResumesResponse> getUserResumes(String username) {
+        List<Resume> userResumes = findUserResumes(username);
         return userResumes.stream().map(ResumesResponse::fromEntity).collect(Collectors.toList());
     }
 
-    public ResumesResponse patchResume(UserDetails userDetails, Integer resumeId, ResumesRequest resumesRequest) {
-        Optional<Resume> resumeList = resumeRepository.findById(resumeId);
-        if (resumeList.isEmpty())
+    public ResumesResponse patchResume(String username, Integer resumeId, ResumesRequest resumesRequest) {
+        List<Resume> userResumes = findUserResumes(username);
+        Optional<Resume> OptionalResume = userResumes.stream().filter(r -> r.getId() == resumeId).findFirst();
+        if (OptionalResume.isEmpty())
             throw new BusinessException("resume not found");
-        Resume resume = resumeList.get();
+        Resume resume = OptionalResume.get();
         if (resumesRequest.getTitle() != null)
             resume.setTitle(resumesRequest.getTitle());
         if (resumesRequest.getDescription() != null)
@@ -96,8 +101,7 @@ public class ResumesService {
         return resumeResponse;
     }
 
-    private List<Resume> findUserResumes(UserDetails userDetails) {
-        String username = userDetails.getUsername();
+    private List<Resume> findUserResumes(String username) {
         return resumeRepository.findAllByUserUsername(username);
     }
 }
