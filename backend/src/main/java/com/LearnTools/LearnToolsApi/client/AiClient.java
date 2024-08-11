@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.LearnTools.LearnToolsApi.controller.dto.Client.AiResumeRequest;
-import com.LearnTools.LearnToolsApi.controller.dto.Client.AiResumeResponse;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.AiGenerateRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.AiGenerateResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.AiTagResponse;
 
 @FeignClient(name = "aiClient", url = "http://localhost:11434/api")
@@ -16,5 +16,5 @@ public interface AiClient {
     AiTagResponse getTags();
 
     @PostMapping("/chat")
-    AiResumeResponse getResumeResponse(@RequestBody AiResumeRequest aiTitleRequest);
+    AiGenerateResponse getResumeResponse(@RequestBody AiGenerateRequest aiTitleRequest);
 }

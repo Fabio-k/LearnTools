@@ -49,9 +49,13 @@ public class AuthenticationService {
         }
 
         public JwtAuthenticationResponse signup(SignUpRequest request) {
-                if (request.getUsername().startsWith(github_account_prefix)) {
+                String username = request.getUsername();
+                if (username.startsWith(github_account_prefix)) {
                         throw new BusinessException("github_ is a reserved prefix");
                 }
+                Optional<User> optionalUser = userRepository.findByUsername(username);
+                if (optionalUser.isPresent())
+                        throw new BusinessException("user already exists");
                 User user = new User(request.getName(), request.getUsername(),
                                 passwordEncoder.encode(request.getPassword()),
                                 Role.USER.name());
@@ -106,6 +110,6 @@ public class AuthenticationService {
                 user.setImage(response.getAvatar_url());
                 user.setRole(Role.USER.name());
                 return userRepository.save(user);
-
         }
+
 }

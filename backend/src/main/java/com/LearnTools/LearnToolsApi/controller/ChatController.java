@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.LearnTools.LearnToolsApi.client.AiClient;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.MessageRequest;
-import com.LearnTools.LearnToolsApi.controller.dto.Client.AiResumeResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.ChatRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.AiMessageResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.AiTagResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.ChatResponse;
 import com.LearnTools.LearnToolsApi.services.ChatService;
@@ -38,7 +38,7 @@ public class ChatController {
     }
 
     @PostMapping("/{id}")
-    public AiResumeResponse postChat(@AuthenticationPrincipal UserDetails userDetails,
+    public AiMessageResponse postChat(@AuthenticationPrincipal UserDetails userDetails,
             @RequestBody MessageRequest messageDTO,
             @PathVariable Integer id) {
 

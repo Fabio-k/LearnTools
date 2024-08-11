@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.LearnTools.LearnToolsApi.controller.dto.Response.SimpleMessage;
 
-public class AiResumeRequest {
+public class AiGenerateRequest {
     private String model;
     private List<SimpleMessage> messages;
     private Boolean stream;

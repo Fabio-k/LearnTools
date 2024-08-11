@@ -30,6 +30,10 @@ public class Assistent {
     public Assistent() {
     }
 
+    public Assistent(String name) {
+        this.name = name;
+    }
+
     public Assistent(@NotNull String name, @NotNull String prompt) {
         this.name = name;
         this.prompt = prompt;

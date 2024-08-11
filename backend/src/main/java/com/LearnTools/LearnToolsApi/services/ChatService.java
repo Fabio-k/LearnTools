@@ -11,12 +11,11 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.LearnTools.LearnToolsApi.client.AiClient;
 import com.LearnTools.LearnToolsApi.controller.dto.MessageDto;
-import com.LearnTools.LearnToolsApi.controller.dto.Client.AiResumeRequest;
-import com.LearnTools.LearnToolsApi.controller.dto.Client.AiResumeResponse;
+import com.LearnTools.LearnToolsApi.controller.dto.Client.AiGenerateResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.ChatRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Request.MessageRequest;
+import com.LearnTools.LearnToolsApi.controller.dto.Response.AiMessageResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.ChatResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.SimpleMessage;
 import com.LearnTools.LearnToolsApi.handler.BusinessException;
@@ -41,8 +40,7 @@ public class ChatService {
     private final AssistentRepository assistentRepository;
 
     private final UserService userService;
-
-    private final AiClient aiClient;
+    private final AiService aiService;
 
     private final String RESUME_PROMPT = "prompt resume base";
     private final String NAME_SUBSTITUTION = "$NAME";
@@ -53,14 +51,14 @@ public class ChatService {
 
     public ChatService(MessagesRepository messagesRepository, ChatRepository chatRepository,
             PromptRepository promptRepository, ResumeRepository resumeRepository,
-            AssistentRepository assistentRepository, UserService userService, AiClient aiClient) {
+            AssistentRepository assistentRepository, UserService userService, AiService aiService) {
         this.messagesRepository = messagesRepository;
         this.chatRepository = chatRepository;
         this.promptRepository = promptRepository;
         this.resumeRepository = resumeRepository;
         this.assistentRepository = assistentRepository;
         this.userService = userService;
-        this.aiClient = aiClient;
+        this.aiService = aiService;
     }
 
     public ChatResponse getOrCreateChat(String username, ChatRequest request) {
@@ -68,6 +66,7 @@ public class ChatService {
             throw new BusinessException("resumeId cant be null");
         if (username == null)
             throw new BusinessException("username cant be null");
+
         Optional<Chat> optionalChat = chatRepository.findAllChatByUserUsername(username).stream()
                 .filter(c -> c.getResume().getId() == request.getResumeId()).findFirst();
 
@@ -83,12 +82,12 @@ public class ChatService {
         return formatChatToChatResponse(optionalChat.get(), false);
     }
 
-    public AiResumeResponse handleAiChatReponse(UserDetails userDetails, MessageRequest request, Integer id) {
+    public AiMessageResponse handleAiChatReponse(UserDetails userDetails, MessageRequest request, Integer id) {
         Optional<Chat> matchChat = findUserChatByChatId(userDetails.getUsername(), id);
         if (matchChat.isEmpty())
             throw new BusinessException("chat not found");
-
-        saveMessage(matchChat.get(), request.getMessage(), ROLE_USER);
+        Chat chat = matchChat.get();
+        saveMessage(chat, request.getMessage(), ROLE_USER);
 
         List<MessagesEntity> messagesEntityList = messagesRepository.findAllByChatId(matchChat.get().getId());
         messagesEntityList.sort(Comparator.comparing(MessagesEntity::getTimestamp));
@@ -96,10 +95,18 @@ public class ChatService {
         List<SimpleMessage> messagesList = messagesEntityList.stream().map(SimpleMessage::fromEntity)
                 .collect(Collectors.toList());
 
-        AiResumeResponse aiResumeResponse = createAiResumeResponse(request, messagesList, matchChat.get());
-        saveMessage(matchChat.get(), aiResumeResponse);
+        AiGenerateResponse aiGenerateResponse = aiService.getAiResponse(request.getModel(), messagesList);
+        saveMessage(matchChat.get(), aiGenerateResponse);
 
-        return aiResumeResponse;
+        MessageDto message = new MessageDto();
+        message.setMessage(aiGenerateResponse.getMessage().getContent());
+        message.setRole(aiGenerateResponse.getMessage().getRole());
+
+        AiMessageResponse aiMessage = new AiMessageResponse();
+        aiMessage.setChatId(chat.getId());
+        aiMessage.setMessage(message);
+
+        return aiMessage;
 
     }
 
@@ -131,7 +138,7 @@ public class ChatService {
         List<SimpleMessage> listMessages = new ArrayList<>();
         listMessages.add(systemMessage);
 
-        AiResumeResponse aiResponse = createAiResumeResponse(request, listMessages, chat);
+        AiGenerateResponse aiResponse = aiService.getAiResponse(request.getModel(), listMessages);
         saveMessage(chat, aiResponse);
 
         return chat;
@@ -166,22 +173,9 @@ public class ChatService {
         return chatResponse;
     }
 
-    private AiResumeResponse createAiResumeResponse(ChatRequest request, List<SimpleMessage> listMessages,
-            Chat chat) {
-        AiResumeRequest aiResumeRequest = new AiResumeRequest();
-        aiResumeRequest.setModel(request.getModel());
-        aiResumeRequest.setMessages(listMessages);
-        aiResumeRequest.setStream(false);
-
-        AiResumeResponse aiResumeResponse = aiClient.getResumeResponse(aiResumeRequest);
-        aiResumeResponse.setChatId(chat.getId());
-
-        return aiResumeResponse;
-    }
-
-    private void saveMessage(Chat chat, AiResumeResponse aiResumeResponse) {
-        String content = aiResumeResponse.getMessage().getContent();
-        String role = aiResumeResponse.getMessage().getRole();
+    private void saveMessage(Chat chat, AiGenerateResponse AiGenerateResponse) {
+        String content = AiGenerateResponse.getMessage().getContent();
+        String role = AiGenerateResponse.getMessage().getRole();
         MessagesEntity newMessage = new MessagesEntity(chat, content,
                 role, LocalDateTime.now());
 
@@ -215,6 +209,7 @@ public class ChatService {
         BasePrompt = BasePrompt.replace(RESUME_SUBSTITUTION, resumeContent);
 
         MessagesEntity SystemMessage = saveMessage(chat, BasePrompt, ROLE_SYSTEM);
+
         SimpleMessage simpleMessage = new SimpleMessage();
         simpleMessage.setContent(SystemMessage.getMessage());
         simpleMessage.setRole(SystemMessage.getOrigin());
