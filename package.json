@@ -12,7 +12,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
+    "dev": "docker compose up -d && npm run start",
     "build": "vite build",
     "test": "vitest"
   },
