@@ -1,0 +1,115 @@
+.authBackgroundDiv {
+  background-color: #007bff;
+  display: flex;
+  height: 100vh;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.authLogo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 100%;
+}
+
+.authLogo img {
+  height: 20%;
+  margin-right: 50px;
+}
+
+.contentContainer {
+  display: flex;
+  background-color: white;
+  height: 100%;
+  width: 50%;
+  padding: 10px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+
+.contentContainer form {
+  display: flex;
+  height: 60%;
+  width: 60%;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.contentContainer form input {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 15px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 2px solid #ebebeb;
+}
+
+.authHeader {
+  width: 100%;
+}
+
+.contentContainer form button {
+  display: block;
+}
+
+.loginError {
+  border: 2px solid red !important;
+}
+
+.loginButton {
+  background-color: #ff9b53;
+  color: white;
+  border: none;
+  width: 50%;
+  border-radius: 20px;
+  padding: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.loginButton:hover {
+  background-color: rgb(187, 113, 60);
+}
+
+.authDivider {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.divider {
+  height: 1px;
+  width: 40%;
+  background-color: lightsteelblue;
+}
+.github {
+  display: flex;
+  align-items: center;
+  width: 30%;
+  min-width: 240px;
+  background-color: rgb(40, 37, 37);
+  color: white;
+}
+
+.githubContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.signUpLink {
+  color: #e48a4a;
+  cursor: pointer;
+}
+
+.signUpLink:hover {
+  text-decoration: underline;
+}

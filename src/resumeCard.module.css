@@ -1,0 +1,30 @@
+.resume {
+  position: relative;
+  border-top: 2px solid #e8e8e8;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.resumeSelected {
+  background-color: #ebebeb !important;
+}
+
+.resume:hover {
+  background-color: rgb(249, 249, 249);
+}
+
+.menuImage {
+  height: 25px;
+  padding: 5px 15px;
+  border-radius: 10px;
+}
+
+.menuImage:hover {
+  background-color: rgb(222, 222, 222);
+}

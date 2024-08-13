@@ -1,0 +1,12 @@
+.defaultButton {
+  border: none;
+  padding: 10px;
+  border-radius: 15px;
+  font-weight: bold;
+  background-color: inherit;
+  cursor: pointer;
+}
+
+.defaultButton:hover {
+  background-color: rgb(238, 238, 238);
+}
