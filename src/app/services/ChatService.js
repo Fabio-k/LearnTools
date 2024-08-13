@@ -14,7 +14,7 @@ export default class ChatService extends Api {
       model: model,
     };
     const response = await this.request(methods.post, body);
-    if (response.status == 200) return await response.json();
+    if (response.status === 200) return await response.json();
   }
   async getMessage(chatId, message, model) {
     this.baseUrl += `/${chatId}`;
@@ -25,12 +25,12 @@ export default class ChatService extends Api {
     console.log(body);
     const response = await this.request(methods.post, body);
 
-    if (response.status == 200) return await response.json();
+    if (response.status === 200) return await response.json();
   }
 
   async getTags() {
     const response = await this.request(methods.get, undefined, "/tags");
-    if (response.status == 200) return await response.json();
+    if (response.status === 200) return await response.json();
   }
 
   async deleteChat(chatId) {
@@ -39,6 +39,6 @@ export default class ChatService extends Api {
       undefined,
       `/${chatId}`
     );
-    return response.status == 200;
+    return response.status === 200;
   }
 }

@@ -4,6 +4,7 @@ import AssistentService from "../../app/services/AssistentService";
 import ChatService from "../../app/services/ChatService";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import SendButton from "../../Assets/ui/sendIcon.svg";
+import Button from "../../components/Button/Button";
 
 const AiChat = (props) => {
   const [assistents, setAssistents] = useState([]);
@@ -32,7 +33,7 @@ const AiChat = (props) => {
   };
 
   const handleCreateNewChat = async () => {
-    if (props.resumeId == 0) return;
+    if (props.resumeId === 0) return;
     setIsModalOpen(false);
     const chatResponse = await chatService.getNewChat(
       props.resumeId,
@@ -52,7 +53,7 @@ const AiChat = (props) => {
       message,
       currentAiTag
     );
-    chatResponse.message.message = chatResponse.message.content;
+
     chat.messages.push(chatResponse.message);
     setisChatLoading(false);
   };
@@ -121,8 +122,10 @@ const AiChat = (props) => {
           handleItemClick={handleAiAssistentClick}
           containerStyle={{ margin: "0px", border: "none" }}
         ></Dropdown>
-
-        <button onClick={() => handleDeleteChat()}>start a new chat</button>
+        <div>
+          <Button content="review" onCLick={handleDeleteChat} />
+          <Button content="new chat" onCLick={handleDeleteChat} />
+        </div>
       </div>
       <div className="chatContent">
         <div id="messagesDiv">
@@ -132,12 +135,14 @@ const AiChat = (props) => {
                   <div
                     key={index}
                     className={`${
-                      message.role == "assistant"
+                      message.role === "assistant"
                         ? "assistentMessage"
                         : "userMessage"
                     }`}
                   >
-                    {message.role == "assistant" && <p>{chat.assistentName}</p>}
+                    {message.role === "assistant" && (
+                      <p className="assistentName">{chat.assistentName}</p>
+                    )}
                     <p>{message.message}</p>
                   </div>
                 );

@@ -11,6 +11,7 @@ export const routes = {
   assistent: `${server}/assistents`,
   resumes: `${server}/resumes`,
   login: `${server}/signin`,
+  signUp: `${server}/signup`,
   github: `${server}/github`,
   analitics: `${server}/analitics`,
   chat: `${server}/chat`,

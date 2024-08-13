@@ -16,7 +16,7 @@ export default class resumesService extends Api {
       description: description,
     };
     const response = await this.request(methods.post, body);
-    if (response.status == 200) return await response.json();
+    if (response.status === 200) return await response.json();
   }
 
   async deleteResume(id) {
@@ -32,6 +32,6 @@ export default class resumesService extends Api {
     };
 
     const response = await this.request(methods.patch, body);
-    if (response.status == 200) return await response.json();
+    if (response.status === 200) return await response.json();
   }
 }

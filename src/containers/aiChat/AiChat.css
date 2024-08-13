@@ -82,6 +82,22 @@ p {
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+#newChatButton {
+  border: none;
+  padding: 10px;
+  border-radius: 15px;
+  font-weight: bold;
+  background-color: inherit;
+  cursor: pointer;
+}
+
+#newChatButton:hover {
+  background-color: rgb(240, 240, 240);
 }
 
 .chatContent {
@@ -100,6 +116,11 @@ p {
   padding-top: 20px;
   box-sizing: border-box;
   max-height: 80%;
+}
+
+.assistentName {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .assistentMessage {
@@ -129,6 +150,7 @@ p {
 
 .inputContainer {
   box-sizing: border-box;
+  height: 60px;
   width: 60%;
   position: relative;
 }

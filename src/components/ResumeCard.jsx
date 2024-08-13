@@ -11,7 +11,7 @@ const ResumeCard = ({
   handleButtonContextMenu,
 }) => {
   const classes = `${style.resume} ${
-    resumeData.id == selectedResumeId ? style.resumeSelected : ""
+    resumeData.id === selectedResumeId ? style.resumeSelected : ""
   }`;
 
   return (

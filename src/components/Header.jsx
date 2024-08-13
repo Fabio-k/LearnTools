@@ -11,8 +11,8 @@ const Header = () => {
         <Link to="/resumes" className={style.link}>
           Resumos
         </Link>
-        <Link to="/flashcards" className={style.link}>
-          Flashcards
+        <Link to="/roadmap" className={style.link}>
+          roadmap creator
         </Link>
       </section>
     </header>

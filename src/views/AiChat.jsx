@@ -41,7 +41,7 @@ const AiChat = () => {
     }
   };
   const handleKeySubmit = (event) => {
-    if (event.key == "Enter") {
+    if (event.key === "Enter") {
       handleSubmit();
     }
   };

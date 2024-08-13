@@ -8,9 +8,10 @@ import queryString from "query-string";
 import useUser from "../interfaces/hooks/useUser";
 
 const AuthPage = () => {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
 
   const { fetchUser } = useUser();
@@ -43,12 +44,24 @@ const AuthPage = () => {
   const handleSubmitForm = async (event) => {
     event.preventDefault();
     const authService = new Auth();
+    if (isSignUp) {
+      try {
+        const response = await authService.signUpUser(username, password);
+        if (response.status === 200) {
+          const responseBody = await response.json();
+          localStorage.setItem("token", responseBody["token"]);
+          await fetchUser();
+          navigate("/home");
+        }
+      } catch (e) {}
+      return;
+    }
     try {
-      const response = await authService.getUserInformation(name, password);
+      const response = await authService.getUserInformation(username, password);
       if (response) {
         localStorage.setItem("token", response["token"]);
         await fetchUser();
-        navigate("/home", { userInformation: { response } });
+        navigate("/home");
       }
     } catch (e) {
       console.log("error no post" + e);
@@ -60,21 +73,33 @@ const AuthPage = () => {
     <div className={styles.authBackgroundDiv}>
       <div className={styles.authLogo}>
         <img src={logo} alt="Logo" />
-        <h1 style={{ color: "white" }}>Bem vindo de volta!</h1>
+        <h1 style={{ color: "white", textAlign: "center" }}>
+          {isSignUp ? "Bem Vindo" : "Bem vindo de volta"}!
+        </h1>
       </div>
       <main className={styles.contentContainer}>
         <form action="" method="post" onSubmit={handleSubmitForm}>
           <div className={styles.authHeader}>
-            <h1 style={{ width: "100%" }}>Fazer Login</h1>
-            <p>Não está cadastrdo? cadastrar</p>
+            <h1 style={{ width: "100%" }}>
+              {isSignUp ? "Fazer Cadastro" : "Fazer Login"}
+            </h1>
+            <p>
+              {isSignUp ? "Já possui um login" : "Não está cadastrdo"}?{" "}
+              <span
+                className={styles.signUpLink}
+                onClick={() => setIsSignUp(!isSignUp)}
+              >
+                {isSignUp ? "login" : "cadastrar"}
+              </span>
+            </p>
           </div>
 
           <input
             type="text"
             placeholder="Digite seu usuário"
             name="username"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             onClick={() => setLoginError(false)}
             autoComplete="off"
             className={loginError ? styles.loginError : undefined}
@@ -91,7 +116,7 @@ const AuthPage = () => {
           />
 
           <button type="submit" className={styles.loginButton}>
-            Login
+            {isSignUp ? "Cadastrar" : "Login"}
           </button>
 
           <div className={styles.authDivider}>

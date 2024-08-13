@@ -4,7 +4,10 @@ import styles from "../resume.module.css";
 import Header from "../components/Header";
 import ResumeCard from "../components/ResumeCard";
 import ContextMenu from "../components/ContextMenu/ContextMenu";
-import ResumeArea from "../containers/resumeArea";
+import ResumeArea from "../containers/resumeArea/ResumeArea";
+import addButton from "../Assets/ui/addButton.svg";
+import searchIcon from "../Assets/ui/searchIcon.svg";
+import closeSearchIcon from "../Assets/ui/closeSearchButton.svg";
 
 const handleResumeSummary = (description) => {
   if (description.length <= 100) return description;
@@ -28,16 +31,16 @@ const resumeData = {
 async function deleteResume(resumeId) {
   const resumeService = new resumesService();
   const response = await resumeService.deleteResume(resumeId);
-  if (response.status == 200) {
+  if (response.status === 200) {
     return true;
   }
   return false;
 }
 
 const Resumes = () => {
-  const [isLoadingContent, setIsLoadingContent] = useState({});
   const [isFeymanChat, setIsFeymanChat] = useState(false);
   const [search, setSearch] = useState("");
+  const [activeFilterButton, setActiveFilterButton] = useState("todos");
 
   const [resumeDisplay, setResumeDisplay] = useState({
     id: 0,
@@ -120,7 +123,7 @@ const Resumes = () => {
       case "UPDATE":
         let isFound = false;
         let updatedResumes = state.resumes.map((resume) => {
-          if (resume.id == resumeDisplay.id) {
+          if (resume.id === resumeDisplay.id) {
             isFound = true;
             return action.payload;
           }
@@ -158,7 +161,7 @@ const Resumes = () => {
   }
 
   const handleItemClick = (item) => {
-    if (item.id == resumeDisplay.id && isFeymanChat == false) return;
+    if (item.id === resumeDisplay.id && isFeymanChat === false) return;
     setResumeDisplay({
       id: item.id,
       title: item.title,
@@ -169,54 +172,90 @@ const Resumes = () => {
 
   useEffect(() => {
     const fetchResumes = async () => {
-      setIsLoadingContent(true);
       const resumeService = new resumesService();
       const response = await resumeService.getResumes();
-      setIsLoadingContent(false);
-
       dispatch({ type: "SET_RESUMES", payload: response });
       console.log(response);
     };
     fetchResumes();
   }, []);
 
+  const handleSearchButton = () => {
+    setSearch("");
+  };
+
   return (
     <>
       <Header />
       <div className={styles.mainContainer}>
         <aside className={styles.menu}>
+          <div className={styles.resumeHeader}>
+            <h1>Resumos</h1>
+            <div
+              className={styles.addButton}
+              onClick={() => resetResumeDisplay()}
+            >
+              <img src={addButton} alt="addButton" />
+            </div>
+          </div>
           <div className={styles.resumeFilters}>
-            <input
-              type="text"
-              name=""
-              id=""
-              placeholder="procurar por resumo"
-              className={styles.searchBar}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <div className={styles.searchContainer}>
+              <div
+                className={styles.searchIcon}
+                onClick={() => handleSearchButton()}
+              >
+                <img
+                  src={`${search === "" ? searchIcon : closeSearchIcon}`}
+                  alt="searchIcon"
+                />
+              </div>
+
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder="procurar por resumo"
+                className={styles.searchBar}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+
             <section className={styles.filterSection}>
-              <select name="" id="">
-                <option value="all" defaultChecked>
-                  All
-                </option>
-              </select>
-              <button>não revisados</button>
-              <button>filtros</button>
+              <button
+                className={`${styles.filterButton} ${
+                  activeFilterButton === "todos"
+                    ? styles.activeFilterButton
+                    : ""
+                }`}
+                onClick={() => setActiveFilterButton("todos")}
+              >
+                todos
+              </button>
+              <button
+                className={`${styles.filterButton} ${
+                  activeFilterButton === "naoRevisados"
+                    ? styles.activeFilterButton
+                    : ""
+                }`}
+                onClick={() => setActiveFilterButton("naoRevisados")}
+              >
+                não revisados
+              </button>
+              <button
+                className={`${styles.filterButton} ${
+                  activeFilterButton === "revisados"
+                    ? styles.activeFilterButton
+                    : ""
+                }`}
+                onClick={() => setActiveFilterButton("revisados")}
+              >
+                revisados
+              </button>
             </section>
           </div>
 
           <section className={styles.resumeSection}>
-            <section className={styles.resumeActions}>
-              <button
-                onClick={() => {
-                  resetResumeDisplay();
-                }}
-              >
-                + novo resumo
-              </button>
-            </section>
-
             {resumes.resumes.length > 0 ? (
               <ul className={styles.resumeList}>
                 {resumes.resumes

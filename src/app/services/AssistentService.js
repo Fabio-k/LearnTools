@@ -9,7 +9,7 @@ export default class AssistentService extends Api {
 
   async getAssistents() {
     const response = await this.request(methods.get);
-    if (response.status == 200) return await response.json();
+    if (response.status === 200) return await response.json();
     return undefined;
   }
 }

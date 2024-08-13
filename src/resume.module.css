@@ -3,14 +3,72 @@
   flex-grow: 1;
 }
 
-.searchBar {
-  width: 100%;
-  border: none;
-  background-color: #d9d9d9;
+.resumeHeader {
+  padding: 5px 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.addButton {
+  background-color: #ffffff;
   padding: 10px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.addButton:hover {
+  background-color: #ececec;
+}
+
+.filterButton {
+  cursor: pointer;
+  min-width: 30%;
+  padding: 10px;
+  border: none;
   border-radius: 20px;
+  background-color: #e7e7e7;
+  font-weight: bold;
+}
+
+.filterButton:hover {
+  background-color: #dbdbdb;
+}
+
+.activeFilterButton {
+  background-color: orange !important;
+  color: white;
+}
+
+.searchContainer {
+  width: 100%;
   margin-bottom: 10px;
+  display: flex;
+  border-radius: 10px;
+  background-color: #e7e7e7;
   box-sizing: border-box;
+}
+
+.searchIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  min-width: 15%;
+}
+.searchBar {
+  flex-grow: 1;
+  border: none;
+  background-color: inherit;
+  padding: 12px 0px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+.searchBar:focus {
+  outline: none;
 }
 
 .menu {
@@ -18,8 +76,8 @@
   flex-direction: column;
   width: 30%;
   min-height: 100%;
-  max-height: 100%;
-  padding-top: 20px;
+  max-height: 90vh;
+
   border-right: 2px solid #d9d9d9;
   background-color: white;
   box-sizing: border-box;
@@ -29,8 +87,9 @@
   padding: 0px 10px;
   padding-bottom: 10px;
   border-bottom: 2px solid #d9d9d9;
-  height: 10vh;
+  min-height: 10vh;
   box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 .resumeActions {
@@ -69,6 +128,7 @@
   overflow-x: visible;
   overflow-y: auto;
   height: 77vh;
+  max-height: 70vh;
 }
 
 .resumeList {

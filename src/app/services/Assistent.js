@@ -1,4 +1,4 @@
-import Api, { aiModel, routes } from "../api";
+import Api, { routes } from "../api";
 
 export default class Assistent extends Api {
   constructor() {

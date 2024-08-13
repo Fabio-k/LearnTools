@@ -1,9 +1,8 @@
 import "./ResumeArea.css";
 import resumesService from "../../app/services/resumeService";
-import { memo, useEffect, useState } from "react";
 import chatIcon from "../../Assets/ui/chatIcon.svg";
-import AiChat from "../aiChat";
-import ChatService from "../../app/services/ChatService";
+import AiChat from "../aiChat/Aichat";
+import Button from "../../components/Button/Button";
 
 const ResumeArea = ({
   resumes,
@@ -24,7 +23,7 @@ const ResumeArea = ({
   async function saveResume() {
     const resumeService = new resumesService();
     let response;
-    if (resumeDisplay.id == 0) {
+    if (resumeDisplay.id === 0) {
       response = await resumeService.addResume(
         resumeDisplay.title,
         resumeDisplay.description
@@ -53,9 +52,8 @@ const ResumeArea = ({
     <>
       <div className="titleContainer">
         <div className="textButtons">
-          <button className="saveButton" onClick={() => handleResumeSave()}>
-            salvar resumo
-          </button>
+          <Button content="revisar" />
+          <Button content="salvar resumo" onCLick={handleResumeSave} />
         </div>
 
         <input
@@ -75,7 +73,7 @@ const ResumeArea = ({
         onChange={(e) => handleResumeDescription(e.target.value)}
         placeholder="texto"
       ></textarea>
-      {resumeDisplay.id != 0 ? (
+      {resumeDisplay.id !== 0 ? (
         <button className="chatButton" onClick={() => setIsFeymanChat(true)}>
           <img src={chatIcon} className="chatImg" alt="chat icon" />
         </button>

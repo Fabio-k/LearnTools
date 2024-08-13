@@ -17,6 +17,7 @@
 
 .authLogo img {
   height: 20%;
+  margin-right: 50px;
 }
 
 .contentContainer {
@@ -102,4 +103,13 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+}
+
+.signUpLink {
+  color: #e48a4a;
+  cursor: pointer;
+}
+
+.signUpLink:hover {
+  text-decoration: underline;
 }

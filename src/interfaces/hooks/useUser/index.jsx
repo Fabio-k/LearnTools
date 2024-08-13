@@ -41,7 +41,7 @@ export const UserProvider = ({ children }) => {
       const response = await fetch(userApi, header);
       const responseBody = await response.json();
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         const cachedUser = {
           username: responseBody.username,
           createdAt: Date.now(),
@@ -49,7 +49,7 @@ export const UserProvider = ({ children }) => {
 
         setUser(responseBody);
         localStorage.setItem("user", JSON.stringify(cachedUser));
-      } else if (response.status == 403) {
+      } else if (response.status === 403) {
         console.log("unauthorized");
         setUser(null);
         localStorage.removeItem("user");
