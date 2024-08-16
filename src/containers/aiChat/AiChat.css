@@ -105,14 +105,14 @@ p {
   flex-direction: column;
   align-items: center;
   overflow: auto;
-  height: 70%;
+  height: 75%;
   width: 100%;
   box-sizing: border-box;
-  max-height: 70vh;
+  max-height: 75vh;
 }
 
 #messagesDiv {
-  width: 80%;
+  width: 65%;
   padding-top: 20px;
   box-sizing: border-box;
   max-height: 80%;
@@ -139,9 +139,10 @@ p {
 }
 
 .textContainer {
+  position: relative;
   width: 100%;
   max-width: 100%;
-  height: 18%;
+  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -149,43 +150,58 @@ p {
 }
 
 .inputContainer {
+  position: absolute; /* Passo 2: Defina como absoluto */
+  bottom: 0; /* Alinha ao fundo do .textContainer */
+  left: 50%; /* Alinha à esquerda do .textContainer */
+  right: 50%; /* Alinha à direita do .textContainer */
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   box-sizing: border-box;
-  height: 60px;
-  width: 60%;
-  position: relative;
+  min-height: 60px;
+  width: 70%;
+  padding-right: 5px;
+  border: 2px solid rgb(225, 225, 225);
+  border-radius: 30px;
+  background-color: white;
+}
+
+#aiTextInput {
+  flex-grow: 1;
+  border: none;
+  background-color: transparent;
+  padding: 20px;
+  max-height: 500px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+#aiTextInput:focus {
+  outline: none;
 }
 
 .sendButton {
-  position: absolute;
   height: 50px;
   width: 50px;
   padding: 5px;
-  background-color: inherit;
+  background-color: initial;
   border: none;
   border-radius: 40px;
-  top: 50%;
-  left: 90%;
-  transform: translate(0%, -50%);
   cursor: pointer;
   box-sizing: border-box;
   transition: background 200ms;
   box-sizing: border-box;
 }
 
+.sendButton:disabled {
+  cursor: default;
+  background-color: inherit !important;
+}
 .sendButton:hover {
   background-color: rgb(246, 246, 246);
 }
 
 #sendIcon {
   height: 60%;
-}
-
-#aiTextInput {
-  width: 100%;
-  border: none;
-  border: 2px solid rgb(225, 225, 225);
-  border-radius: 30px;
-  padding: 20px;
-  padding-right: 70px;
-  box-sizing: border-box;
 }

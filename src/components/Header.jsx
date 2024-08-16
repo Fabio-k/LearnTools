@@ -12,7 +12,7 @@ const Header = () => {
           Resumos
         </Link>
         <Link to="/roadmap" className={style.link}>
-          roadmap creator
+          roadmap
         </Link>
       </section>
     </header>

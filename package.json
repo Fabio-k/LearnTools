@@ -15,7 +15,8 @@
     "start": "vite --host",
     "dev": "docker compose up -d && npm run start",
     "build": "vite build",
-    "test": "vitest"
+    "test": "vitest",
+    "test-ui": "vitest --ui"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -24,6 +25,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/ui": "^2.0.5",
     "eslint": "^9.8.0",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",

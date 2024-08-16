@@ -9,7 +9,7 @@ import com.LearnTools.LearnToolsApi.controller.dto.Client.AiGenerateRequest;
 import com.LearnTools.LearnToolsApi.controller.dto.Client.AiGenerateResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.AiTagResponse;
 
-@FeignClient(name = "aiClient", url = "http://localhost:11434/api")
+@FeignClient(name = "aiClient", url = "http://host.docker.internal:11434/api")
 public interface AiClient {
 
     @GetMapping("/tags")

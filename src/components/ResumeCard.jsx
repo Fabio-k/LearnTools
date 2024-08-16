@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import menu from "../Assets/ui/menu.svg";
 import style from "../resumeCard.module.css";
 

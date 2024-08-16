@@ -18,10 +18,13 @@ const Dropdown = ({
         ["assistentMenu", "dropdownIcon", "dropdownText"].some((className) =>
           e.target.classList.contains(className)
         )
-      )
+      ) {
         return;
+      }
+
       if (contextDropdownRef.current)
         if (!contextDropdownRef.current.contains(e.target)) {
+          console.log("clicado");
           setIsDropdownOpen(false);
         }
     }

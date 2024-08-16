@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from "react";
+import React, { useReducer, useState, useEffect, useRef } from "react";
 import resumesService from "../app/services/resumeService";
 import styles from "../resume.module.css";
 import Header from "../components/Header";
@@ -41,6 +41,7 @@ const Resumes = () => {
   const [isFeymanChat, setIsFeymanChat] = useState(false);
   const [search, setSearch] = useState("");
   const [activeFilterButton, setActiveFilterButton] = useState("todos");
+  const searchRef = useRef(null);
 
   const [resumeDisplay, setResumeDisplay] = useState({
     id: 0,
@@ -73,7 +74,6 @@ const Resumes = () => {
   }
 
   function handleButtonContextMenu(e, rightClickItem) {
-    //TODO: detect if the item is near the bottom
     const rect = e.target.getBoundingClientRect();
     const elementX = rect.left + window.scrollX;
     const elementY = rect.top + window.scrollY;
@@ -83,7 +83,7 @@ const Resumes = () => {
         x: elementX + 40,
         y: elementY,
       },
-      toggled: !contextMenu.toggled,
+      toggled: true,
       rightClickItem: rightClickItem,
     });
 
@@ -181,7 +181,8 @@ const Resumes = () => {
   }, []);
 
   const handleSearchButton = () => {
-    setSearch("");
+    if (search === "") searchRef.current && searchRef.current.focus();
+    else setSearch("");
   };
 
   return (
@@ -214,6 +215,7 @@ const Resumes = () => {
                 type="text"
                 name=""
                 id=""
+                ref={searchRef}
                 placeholder="procurar por resumo"
                 className={styles.searchBar}
                 value={search}
