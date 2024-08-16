@@ -58,6 +58,7 @@
   align-items: center;
   height: 40px;
   min-width: 15%;
+  cursor: pointer;
 }
 .searchBar {
   flex-grow: 1;

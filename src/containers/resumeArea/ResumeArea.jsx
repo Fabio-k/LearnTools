@@ -5,7 +5,6 @@ import AiChat from "../aiChat/Aichat";
 import Button from "../../components/Button/Button";
 
 const ResumeArea = ({
-  resumes,
   dispatch,
   isFeymanChat,
   resumeDisplay,

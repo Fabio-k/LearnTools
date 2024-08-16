@@ -1,4 +1,4 @@
-import { useEffect, useState, React } from "react";
+import { useEffect, useState, React, useRef } from "react";
 import "./AiChat.css";
 import AssistentService from "../../app/services/AssistentService";
 import ChatService from "../../app/services/ChatService";
@@ -20,6 +20,8 @@ const AiChat = (props) => {
   const [assistentId, setAssistentId] = useState(0);
   const [message, setMessage] = useState("");
   const [isChatLoading, setisChatLoading] = useState(true);
+  const [isNewMessage, setIsNewMessage] = useState(false);
+  const messageEndRef = useRef(null);
 
   const handleAssistentClick = (assistent) => {
     setAssistentName(assistent.name);
@@ -30,6 +32,11 @@ const AiChat = (props) => {
   const handleAiAssistentClick = (aiTag) => {
     setCurrentAiTag(aiTag.name);
     setAiTagDropdown(false);
+  };
+
+  const handleMainAssistentClick = (aiTag) => {
+    setCurrentAiTag(aiTag.name);
+    setIsMainDropdown(false);
   };
 
   const handleCreateNewChat = async () => {
@@ -43,18 +50,32 @@ const AiChat = (props) => {
     setChat(chatResponse);
     setisChatLoading(false);
   };
-
+  const handleSearchKeyDown = (e) => {
+    if (e.key == "Enter") {
+      handleSendMessage();
+    }
+  };
   const handleSendMessage = async () => {
     setMessage("");
     setisChatLoading(true);
-    chat.messages.push({ role: "user", message: message });
+    const updatedWithUserMessage = [
+      ...chat.messages,
+      { role: "user", message: message },
+    ];
+    setChat({ ...chat, messages: updatedWithUserMessage });
+    setIsNewMessage(true);
+
     const chatResponse = await chatService.getMessage(
       chat.chatId,
       message,
       currentAiTag
     );
-
-    chat.messages.push(chatResponse.message);
+    const updatedWithAiMessage = [
+      ...updatedWithUserMessage,
+      chatResponse.message,
+    ];
+    setChat({ ...chat, messages: updatedWithAiMessage });
+    setIsNewMessage(true);
     setisChatLoading(false);
   };
 
@@ -110,6 +131,22 @@ const AiChat = (props) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (isNewMessage) {
+      messageEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+      });
+      setIsNewMessage(false);
+    } else {
+      messageEndRef.current?.scrollIntoView({ behavior: "auto" });
+    }
+  }, [chat.messages]);
+
+  function adjustHeight(e) {
+    e.target.style.height = "inherit"; // Reseta a altura para calcular corretamente
+    e.target.style.height = `${e.target.scrollHeight}px`; // Ajusta a altura com base no scrollHeight
+  }
+
   return (
     <>
       <div className="aiResumeMenu">
@@ -119,7 +156,7 @@ const AiChat = (props) => {
           renderItem={renderAiTagMenu}
           isDropdownOpen={isMainDropdown}
           setIsDropdownOpen={setIsMainDropdown}
-          handleItemClick={handleAiAssistentClick}
+          handleItemClick={handleMainAssistentClick}
           containerStyle={{ margin: "0px", border: "none" }}
         ></Dropdown>
         <div>
@@ -144,6 +181,9 @@ const AiChat = (props) => {
                       <p className="assistentName">{chat.assistentName}</p>
                     )}
                     <p>{message.message}</p>
+                    {index === chat.messages.length - 1 && (
+                      <div ref={messageEndRef}></div>
+                    )}
                   </div>
                 );
               })
@@ -152,19 +192,29 @@ const AiChat = (props) => {
       </div>
       <div className="textContainer">
         <div className="inputContainer">
-          <input
+          <textarea
             type="text"
             name=""
             id="aiTextInput"
             placeholder="Digite sua resposta aqui"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onInput={(e) => adjustHeight(e)}
+            disabled={isChatLoading}
+            onKeyDown={(e) => handleSearchKeyDown(e)}
+            autoComplete="off"
+            rows="1"
           />
-          <button className="sendButton" onClick={() => handleSendMessage()}>
+          <button
+            className="sendButton"
+            onClick={() => handleSendMessage()}
+            disabled={isChatLoading || message === ""}
+          >
             <img src={SendButton} alt="send message icon" id="sendIcon" />
           </button>
         </div>
       </div>
+
       <div className={`modalBackground ${isModalOpen ? "active" : ""}`}></div>
       <div className={`aiModal ${isModalOpen ? "aiModalActive" : ""}`}>
         <h1 className="aiTitle">Escolha o seu Assistente</h1>
