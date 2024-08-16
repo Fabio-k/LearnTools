@@ -66,27 +66,27 @@ CREATE TABLE tag(
 
 CREATE TABLE chat(
     cht_id SERIAL PRIMARY KEY,
-    cht_title VARCHAR(30) NOT NULL,
+    cht_assistent_name VARCHAR(30),
     cht_usr_id INT NOT NULL,
     cht_res_id INT NOT NULL,
-    FOREIGN KEY(cht_res_id) REFERENCES resume(res_id),
-    FOREIGN KEY(cht_usr_id) REFERENCES tab_user(usr_id)
-);
+    FOREIGN KEY(cht_res_id) REFERENCES resume(res_id) ON DELETE CASCADE,
+    FOREIGN KEY(cht_usr_id) REFERENCES tab_user(usr_id) ON DELETE CASCADE
+    );
 
 CREATE TABLE flashcard_tag(
     fst_id SERIAL PRIMARY KEY,
     fst_fls_id INT NOT NULL,
     fst_tag_id INT NOT NULL,
-    FOREIGN KEY (fst_fls_id) REFERENCES flashcard(fls_id),
-    FOREIGN KEY (fst_tag_id) REFERENCES tag(tag_id)
+    FOREIGN KEY (fst_fls_id) REFERENCES flashcard(fls_id) ON DELETE CASCADE,
+    FOREIGN KEY (fst_tag_id) REFERENCES tag(tag_id) ON DELETE CASCADE
 );
 
 CREATE TABLE resume_tag(
     rst_id SERIAL PRIMARY KEY,
     rst_res_id INT NOT NULL,
     rst_tag_id INT NOT NULL,
-    FOREIGN KEY (rst_res_id) REFERENCES resume(res_id),
-    FOREIGN KEY (rst_tag_id) REFERENCES tag(tag_id)
+    FOREIGN KEY (rst_res_id) REFERENCES resume(res_id) ON DELETE CASCADE,
+    FOREIGN KEY (rst_tag_id) REFERENCES tag(tag_id) ON DELETE CASCADE
 );
 
 CREATE TABLE messages(
@@ -95,7 +95,7 @@ CREATE TABLE messages(
     msg_message TEXT NOT NULL,
     msg_cht_id INT NOT NULL,
     msg_time TIMESTAMP,
-    FOREIGN KEY(msg_cht_id) REFERENCES chat(cht_id)
+    FOREIGN KEY(msg_cht_id) REFERENCES chat(cht_id) ON DELETE CASCADE
 );
 
 CREATE TABLE revision_dificulty(
