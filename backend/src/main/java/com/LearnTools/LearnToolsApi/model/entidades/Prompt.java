@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,6 +20,10 @@ public class Prompt {
     private String name;
     @Column(name = "prt_prompt", length = 100, nullable = false)
     private String prompt;
+
+    @OneToOne
+    @JoinColumn(name = "prt_ast_id")
+    private Assistent assistent;
 
     public Prompt() {
     }
@@ -54,6 +60,14 @@ public class Prompt {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Assistent getAssistent() {
+        return assistent;
+    }
+
+    public void setAssistent(Assistent assistent) {
+        this.assistent = assistent;
     }
 
 }

@@ -19,13 +19,11 @@ import com.LearnTools.LearnToolsApi.controller.dto.Response.AiMessageResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.ChatResponse;
 import com.LearnTools.LearnToolsApi.controller.dto.Response.SimpleMessage;
 import com.LearnTools.LearnToolsApi.handler.BusinessException;
-import com.LearnTools.LearnToolsApi.model.entidades.Assistent;
 import com.LearnTools.LearnToolsApi.model.entidades.Chat;
 import com.LearnTools.LearnToolsApi.model.entidades.MessagesEntity;
 import com.LearnTools.LearnToolsApi.model.entidades.Prompt;
 import com.LearnTools.LearnToolsApi.model.entidades.Resume;
 import com.LearnTools.LearnToolsApi.model.entidades.User;
-import com.LearnTools.LearnToolsApi.model.repository.AssistentRepository;
 import com.LearnTools.LearnToolsApi.model.repository.ChatRepository;
 import com.LearnTools.LearnToolsApi.model.repository.MessagesRepository;
 import com.LearnTools.LearnToolsApi.model.repository.PromptRepository;
@@ -37,7 +35,6 @@ public class ChatService {
     private final ChatRepository chatRepository;
     private final PromptRepository promptRepository;
     private final ResumeRepository resumeRepository;
-    private final AssistentRepository assistentRepository;
 
     private final UserService userService;
     private final AiService aiService;
@@ -50,13 +47,12 @@ public class ChatService {
     private final String ROLE_SYSTEM = "system";
 
     public ChatService(MessagesRepository messagesRepository, ChatRepository chatRepository,
-            PromptRepository promptRepository, ResumeRepository resumeRepository,
-            AssistentRepository assistentRepository, UserService userService, AiService aiService) {
+            PromptRepository promptRepository, ResumeRepository resumeRepository, UserService userService,
+            AiService aiService) {
         this.messagesRepository = messagesRepository;
         this.chatRepository = chatRepository;
         this.promptRepository = promptRepository;
         this.resumeRepository = resumeRepository;
-        this.assistentRepository = assistentRepository;
         this.userService = userService;
         this.aiService = aiService;
     }
@@ -117,12 +113,12 @@ public class ChatService {
         if (matchResume.isEmpty())
             throw new BusinessException("resume not found");
 
-        Optional<Assistent> optionalAssistent = assistentRepository.findById(request.getAssistentId());
+        Optional<Prompt> optionalAssistent = promptRepository.findById(request.getAssistentId());
 
         if (optionalAssistent.isEmpty())
             throw new BusinessException("assistente não encontrado");
 
-        Assistent assistent = optionalAssistent.get();
+        Prompt assistent = optionalAssistent.get();
 
         Resume resume = matchResume.get();
         User user = userService.getUser(username);
@@ -200,12 +196,12 @@ public class ChatService {
         return userResumes;
     }
 
-    private SimpleMessage createSystemMessage(Chat chat, String resumeContent, Assistent assistent) {
+    private SimpleMessage createSystemMessage(Chat chat, String resumeContent, Prompt prompt) {
         Prompt matchBase = promptRepository.findByName(RESUME_PROMPT);
         String BasePrompt = matchBase.getPrompt();
 
-        BasePrompt = BasePrompt.replace(NAME_SUBSTITUTION, assistent.getName());
-        BasePrompt = BasePrompt.replace(PROMPT_SUBSTITUTION, assistent.getPrompt());
+        BasePrompt = BasePrompt.replace(NAME_SUBSTITUTION, prompt.getName());
+        BasePrompt = BasePrompt.replace(PROMPT_SUBSTITUTION, prompt.getPrompt());
         BasePrompt = BasePrompt.replace(RESUME_SUBSTITUTION, resumeContent);
 
         MessagesEntity SystemMessage = saveMessage(chat, BasePrompt, ROLE_SYSTEM);

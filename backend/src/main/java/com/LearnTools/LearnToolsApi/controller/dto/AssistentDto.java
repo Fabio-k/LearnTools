@@ -1,12 +1,22 @@
-package com.LearnTools.LearnToolsApi.controller.dto.Response;
+package com.LearnTools.LearnToolsApi.controller.dto;
 
 import com.LearnTools.LearnToolsApi.model.entidades.Assistent;
 
-public class AssistentResponse {
+public class AssistentDto {
     private Integer id;
     private String name;
     private String prompt;
     private String description;
+
+    public AssistentDto() {
+    }
+
+    public AssistentDto(Integer id, String name, String prompt, String description) {
+        this.id = id;
+        this.name = name;
+        this.prompt = prompt;
+        this.description = description;
+    }
 
     public String getName() {
         return name;
@@ -41,11 +51,11 @@ public class AssistentResponse {
         this.id = id;
     }
 
-    public static AssistentResponse fromEntity(Assistent assistent) {
-        AssistentResponse assistentResponse = new AssistentResponse();
-        assistentResponse.setId(assistent.getId());
-        assistentResponse.setName(assistent.getName());
-        assistentResponse.setPrompt(assistent.getPrompt());
+    public static AssistentDto fromEntity(Assistent assistent) {
+        AssistentDto assistentResponse = new AssistentDto();
+        assistentResponse.setId(assistent.getPrompt().getId());
+        assistentResponse.setName(assistent.getPrompt().getName());
+        assistentResponse.setPrompt(assistent.getPrompt().getPrompt());
         assistentResponse.setDescription(assistent.getDescription());
         return assistentResponse;
     }

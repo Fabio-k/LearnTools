@@ -18,6 +18,7 @@ services:
       - db
     environment:
       DATABASE_URL: jdbc:postgresql://db:5432/lt_db
+      OLLAMA_URL: http://host.docker.internal:11434/api
     ports:
       - "8080:8080"
     command:

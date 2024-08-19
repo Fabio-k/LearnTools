@@ -1,12 +1,13 @@
 package com.LearnTools.LearnToolsApi.model.entidades;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "assistent")
@@ -16,27 +17,13 @@ public class Assistent {
     @Column(name = "ast_id")
     private Integer id;
 
-    @NotNull
-    @Column(length = 50, name = "ast_name")
-    private String name;
-
     @Column(name = "ast_description")
     private String description;
 
-    @NotNull
-    @Column(name = "ast_prompt")
-    private String prompt;
+    @OneToOne(mappedBy = "assistent", cascade = CascadeType.REMOVE)
+    private Prompt prompt;
 
     public Assistent() {
-    }
-
-    public Assistent(String name) {
-        this.name = name;
-    }
-
-    public Assistent(@NotNull String name, @NotNull String prompt) {
-        this.name = name;
-        this.prompt = prompt;
     }
 
     public Integer getId() {
@@ -47,28 +34,20 @@ public class Assistent {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPrompt() {
-        return prompt;
-    }
-
-    public void setPrompt(String prompt) {
-        this.prompt = prompt;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Prompt getPrompt() {
+        return prompt;
+    }
+
+    public void setPrompt(Prompt prompt) {
+        this.prompt = prompt;
     }
 
 }
