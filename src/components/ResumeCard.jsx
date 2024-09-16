@@ -6,7 +6,6 @@ const ResumeCard = ({
   resumeData,
   selectedResumeId,
   onItemClick,
-  resumeSummary,
   handleContextMenu,
   handleButtonContextMenu,
 }) => {
@@ -23,11 +22,8 @@ const ResumeCard = ({
       >
         <section>
           <h1 style={{ margin: 0, fontSize: "20px", fontFamily: "sans-serif" }}>
-            {resumeData.title}
+            {resumeData.title == "" ? "sem título" : resumeData.title}
           </h1>
-          <p style={{ margin: 0, marginTop: "5px", color: "#595959" }}>
-            {resumeSummary}
-          </p>
         </section>
         <img
           src={menu}

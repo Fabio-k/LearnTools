@@ -170,6 +170,18 @@ const Resumes = () => {
     setIsFeymanChat(false);
   };
 
+  const handleCreateNewResume = async () => {
+    const resumeService = new resumesService();
+    const response = await resumeService.addResume("", "");
+    console.log(response);
+    dispatch({ type: "UPDATE", payload: response });
+    setResumeDisplay({
+      id: response.id,
+      title: response.title,
+      description: response.description,
+    });
+  };
+
   useEffect(() => {
     const fetchResumes = async () => {
       const resumeService = new resumesService();
@@ -194,7 +206,7 @@ const Resumes = () => {
             <h1>Resumos</h1>
             <div
               className={styles.addButton}
-              onClick={() => resetResumeDisplay()}
+              onClick={() => handleCreateNewResume()}
             >
               <img src={addButton} alt="addButton" />
             </div>
@@ -275,7 +287,6 @@ const Resumes = () => {
                         key={resume.id}
                         resumeData={resume}
                         selectedResumeId={resumeDisplay.id}
-                        resumeSummary={resumeSumary}
                         onItemClick={() => {
                           handleItemClick(resume);
                         }}
