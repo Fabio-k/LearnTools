@@ -3,6 +3,7 @@ import resumesService from "../../app/services/resumeService";
 import chatIcon from "../../Assets/ui/chatIcon.svg";
 import AiChat from "../aiChat/Aichat";
 import Button from "../../components/Button/Button";
+import Editor from "../../components/Editor/Editor";
 
 const ResumeArea = ({
   dispatch,
@@ -13,10 +14,6 @@ const ResumeArea = ({
 }) => {
   function handleResumeTitle(title) {
     setResumeDisplay({ ...resumeDisplay, title: title });
-  }
-
-  function handleResumeDescription(description) {
-    setResumeDisplay({ ...resumeDisplay, description: description });
   }
 
   async function saveResume() {
@@ -52,26 +49,22 @@ const ResumeArea = ({
       <div className="titleContainer">
         <div className="textButtons">
           <Button content="revisar" />
-          <Button content="salvar resumo" onCLick={handleResumeSave} />
+        </div>
+      </div>
+      <div id="anotationContainer">
+        <div>
+          <textarea
+            class="titleContainer"
+            placeholder="titulo"
+            value={resumeDisplay.title}
+            onChange={(e) => handleResumeTitle(e.target.value)}
+            onBlur={(e) => handleResumeSave()}
+          ></textarea>
         </div>
 
-        <input
-          type="text"
-          className="titleInput"
-          value={resumeDisplay.title}
-          onChange={(e) => handleResumeTitle(e.target.value)}
-          placeholder="titulo"
-        />
+        <Editor resumeDisplay={resumeDisplay} dispatch={dispatch} />
       </div>
 
-      <textarea
-        name=""
-        id=""
-        className="descriptionInput"
-        value={resumeDisplay.description}
-        onChange={(e) => handleResumeDescription(e.target.value)}
-        placeholder="texto"
-      ></textarea>
       {resumeDisplay.id !== 0 ? (
         <button className="chatButton" onClick={() => setIsFeymanChat(true)}>
           <img src={chatIcon} className="chatImg" alt="chat icon" />

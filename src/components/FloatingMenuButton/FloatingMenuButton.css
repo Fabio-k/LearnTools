@@ -1,0 +1,30 @@
+.floatingMenuOption {
+  display: flex;
+  align-items: center;
+  min-width: 280px;
+  border: none;
+  gap: 10px;
+  text-align: left;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.floatingMenuOption:hover {
+  background-color: rgb(232, 232, 232);
+}
+
+.floatingMenuOptionImage {
+  width: 50px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.floatingMenuOptionTitle {
+  font-size: small;
+}
+
+.floatingMenuOptionContent {
+  font-size: smaller;
+  color: rgb(82, 82, 82);
+}

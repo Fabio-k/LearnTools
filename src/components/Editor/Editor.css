@@ -1,0 +1,17 @@
+.editorDefault {
+  outline: none;
+}
+
+.editorContent {
+  flex-grow: 1;
+  padding: 0px 40px;
+}
+
+.floatingMenu {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  background-color: rgb(241, 241, 241);
+  padding: 10px 5px;
+  border-radius: 10px;
+}
